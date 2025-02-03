@@ -1,9 +1,9 @@
 const { DataTypes } = require('sequelize');
+const { tableNames } = require('../consts.js');
 
 exports.ArchType = (sequelize) => {
 	return sequelize.define(
-		'ArchType', {
-			// Model attributes are defined here
+		tableNames.ARCH_TYPE, {
 			ID: {
 				type: DataTypes.INTEGER,
 				allowNull: false,
@@ -13,7 +13,7 @@ exports.ArchType = (sequelize) => {
 				allowNull: false,
 			}
 		}, {
-			tableName: 'ArchType',
+			tableName: tableNames.ARCH_TYPE,
 			timestamps: false
 		}
 	);

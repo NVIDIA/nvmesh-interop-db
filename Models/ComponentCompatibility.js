@@ -1,16 +1,16 @@
 const { DataTypes } = require('sequelize');
 const { ComponentVersion } = require('./ComponentVersion.js');
+const { tableNames, tableAssociations } = require('../consts.js');
 
 exports.ComponentCompatibility = (sequelize) => {
 	let componentCompatibility = sequelize.define(
-		'ComponentCompatibility', {
-			// Model attributes are defined here
+		tableNames.COMPONENT_COMPATIBILITY, {
 			ID: {
 				type: DataTypes.INTEGER,
 				allowNull: false,
 			}
 		}, {
-			tableName: 'ComponentCompatibility',
+			tableName: tableNames.COMPONENT_COMPATIBILITY,
 			timestamps: false
 		}
 	);
@@ -19,14 +19,14 @@ exports.ComponentCompatibility = (sequelize) => {
 		foreignKey: {
 			allowNull: false
 		},
-		as: 'sourceVersion'
+		as: tableAssociations.SOURCE_VERSION
 	});
 
 	componentCompatibility.belongsTo(ComponentVersion(sequelize), {
 		foreignKey: {
 			allowNull: false
 		},
-		as: 'destinationVersion'
+		as: tableAssociations.DESTINATION_VERSION
 	});
 
 	return componentCompatibility;

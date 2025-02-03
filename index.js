@@ -10,6 +10,7 @@ const { Component } = require('./Models/Component.js');
 const { ComponentVersion } = require('./Models/ComponentVersion.js');
 const { ComponentCompatibility } = require('./Models/ComponentCompatibility.js');
 const { ComponentRequirement } = require('./Models/ComponentRequirement.js');
+const dbAPI = require('./dbAPI.js');
 
 let sequelize;
 
@@ -30,31 +31,30 @@ async function printModel(modelFn) {
 	printModels(entities);
 }
 
-exports.connect = async (dbPath) => {
-	if (!sequelize) {
-		sequelize = new Sequelize({
-			dialect: 'sqlite',
-			storage: dbPath
-		});
-	}
-
-	try {
-		await sequelize.authenticate();
-		return sequelize;
-	} catch (error) {
-		console.error('Unable to connect to the database:', error);
-	}
+exports.connect = async(path) => {
+	sequelize = await dbAPI.connect(path);
 }
 
+exports.getSupportedTopicsByVersion = async(version) => {
+	let componentVersion = await ComponentVersion(sequelize).findOne({
+		where: { version: version }, 
+		include: [{ model: Component(sequelize), where: { 'name': 'nvmesh-management' }, as: 'component' }] 
+	});
+	ComponentCompatibility(sequelize).findAll()
+}
+
+//DEBUG
 exports.logAllEntities = async () => {
 	try {
 		await printModel(Kernel);
 
 		let models = [Kernel, ArchType, Ofed, DistributionType, OperatingSystem, Setup, ComponentType, Component, ComponentVersion, ComponentCompatibility, ComponentRequirement];
 
-		Promise.all(models.map(m => printModel(m)));
+		await Promise.all(models.map(m => printModel(m)));
 	} catch (error) {
 		console.log(error);
+	} finally { 
+		console.log('Done!');
 	}
 }
 

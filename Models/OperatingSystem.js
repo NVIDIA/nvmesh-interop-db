@@ -1,10 +1,10 @@
 const { DataTypes } = require('sequelize');
 const { DistributionType } = require('./DistributionType');
+const { tableAssociations, tableNames } = require('../consts');
 
 exports.OperatingSystem = (sequelize) => {
 	let operatingSystem = sequelize.define(
-		'OperatingSystem', {
-			// Model attributes are defined here
+		tableNames.OPERATING_SYSTEM, {
 			ID: {
 				type: DataTypes.INTEGER,
 				allowNull: false,
@@ -14,7 +14,7 @@ exports.OperatingSystem = (sequelize) => {
 				allowNull: false,
 			}
 		}, {
-			tableName: 'OperatingSystem',
+			tableName: tableNames.OPERATING_SYSTEM,
 			timestamps: false
 		}
 	);
@@ -23,7 +23,7 @@ exports.OperatingSystem = (sequelize) => {
 		foreignKey: {
 			allowNull: false
 		},
-		as: 'distributionType'
+		as: tableAssociations.DISTRIBUTION_TYPE
 	});
 
 	return operatingSystem;

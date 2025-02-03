@@ -1,9 +1,9 @@
 const { DataTypes } = require('sequelize');
+const { tableNames } = require('../consts');
 
 exports.Ofed = (sequelize) => {
 	return sequelize.define(
-		'Ofed', {
-			// Model attributes are defined here
+		tableNames.OFED, {
 			ID: {
 				type: DataTypes.INTEGER,
 				allowNull: false,
@@ -13,7 +13,7 @@ exports.Ofed = (sequelize) => {
 				allowNull: false,
 			}
 		}, {
-			tableName: 'Ofed',
+			tableName: tableNames.OFED,
 			timestamps: false
 		}
 	);

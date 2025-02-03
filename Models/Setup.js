@@ -3,17 +3,17 @@ const { ArchType } = require('./ArchType.js');
 const { OperatingSystem } = require('./OperatingSystem.js');
 const { Kernel } = require('./Kernel.js');
 const { Ofed } = require('./Ofed.js');
+const { tableNames, tableAssociations } = require('../consts.js');
 
 exports.Setup = (sequelize) => {
 	let setup = sequelize.define(
-		'Setup', {
-			// Model attributes are defined here
+		tableNames.SETUP, {
 			ID: {
 				type: DataTypes.INTEGER,
 				allowNull: false,
 			}
 		}, {
-			tableName: 'Setup',
+			tableName: tableNames.SETUP,
 			timestamps: false
 		}
 	);
@@ -22,28 +22,28 @@ exports.Setup = (sequelize) => {
 		foreignKey: {
 			allowNull: false
 		},
-		as: 'archType'
+		as: tableAssociations.ARCH_TYPE
 	});
 
 	setup.belongsTo(OperatingSystem(sequelize), {
 		foreignKey: {
 			allowNull: false
 		},
-		as: 'operatingSystem'
+		as: tableAssociations.OPERATING_SYSTEM
 	});
 
 	setup.belongsTo(Kernel(sequelize), {
 		foreignKey: {
 			allowNull: false
 		},
-		as: 'kernel'
+		as: tableAssociations.KERNEL
 	});
 
 	setup.belongsTo(Ofed(sequelize), {
 		foreignKey: {
 			allowNull: false
 		},
-		as: 'ofed'
+		as: tableAssociations.OFED
 	});
 
 	return setup;

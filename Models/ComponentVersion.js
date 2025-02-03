@@ -1,10 +1,10 @@
 const { DataTypes } = require('sequelize');
 const { Component } = require('./Component');
+const { tableNames, tableAssociations } = require('../consts.js');
 
 exports.ComponentVersion = (sequelize) => {
 	let componentVersion = sequelize.define(
-		'ComponentVersion', {
-			// Model attributes are defined here
+		tableNames.COMPONENT_VERSION, {
 			ID: {
 				type: DataTypes.INTEGER,
 				allowNull: false,
@@ -14,7 +14,7 @@ exports.ComponentVersion = (sequelize) => {
 				allowNull: false,
 			}
 		}, {
-			tableName: 'ComponentVersion',
+			tableName: tableNames.COMPONENT_VERSION,
 			timestamps: false
 		}
 	);
@@ -23,7 +23,7 @@ exports.ComponentVersion = (sequelize) => {
 		foreignKey: {
 			allowNull: false
 		},
-		as: 'component'
+		as: tableAssociations.COMPONENT
 	});
 
 	return componentVersion;

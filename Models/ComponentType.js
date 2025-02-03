@@ -1,9 +1,9 @@
 const { DataTypes } = require('sequelize');
+const { tableNames } = require('../consts.js');
 
 exports.ComponentType = (sequelize) => {
 	return sequelize.define(
-		'ComponentType', {
-			// Model attributes are defined here
+		tableNames.COMPONENT_TYPE, {
 			ID: {
 				type: DataTypes.INTEGER,
 				allowNull: false,
@@ -13,7 +13,7 @@ exports.ComponentType = (sequelize) => {
 				allowNull: false,
 			}
 		}, {
-			tableName: 'ComponentType',
+			tableName: tableNames.COMPONENT_TYPE,
 			timestamps: false
 		}
 	);

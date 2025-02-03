@@ -1,9 +1,9 @@
 const { DataTypes } = require('sequelize');
+const { tableNames } = require('../consts');
 
 exports.DistributionType = (sequelize) => {
 	return sequelize.define(
-		'DistributionType', {
-			// Model attributes are defined here
+		tableNames.DISTRIBUTION_TYPE, {
 			ID: {
 				type: DataTypes.INTEGER,
 				allowNull: false,
@@ -13,7 +13,7 @@ exports.DistributionType = (sequelize) => {
 				allowNull: false,
 			}
 		}, {
-			tableName: 'DistributionType',
+			tableName: tableNames.DISTRIBUTION_TYPE,
 			timestamps: false
 		}
 	);
