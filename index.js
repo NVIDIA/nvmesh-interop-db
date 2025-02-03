@@ -11,6 +11,7 @@ const { ComponentVersion } = require('./Models/ComponentVersion.js');
 const { ComponentCompatibility } = require('./Models/ComponentCompatibility.js');
 const { ComponentRequirement } = require('./Models/ComponentRequirement.js');
 const dbAPI = require('./dbAPI.js');
+const { components, tableAssociations, componentTypes } = require('./consts.js');
 
 let sequelize;
 
@@ -35,12 +36,10 @@ exports.connect = async(path) => {
 	sequelize = await dbAPI.connect(path);
 }
 
-exports.getSupportedTopicsByVersion = async(version) => {
-	let componentVersion = await ComponentVersion(sequelize).findOne({
-		where: { version: version }, 
-		include: [{ model: Component(sequelize), where: { 'name': 'nvmesh-management' }, as: 'component' }] 
-	});
-	ComponentCompatibility(sequelize).findAll()
+exports.getSupportedTopicsByVersion = async (version, cb) => {
+	const topics = await dbAPI.getSupportedKafkaTopics(components.MANAGEMENT, version);
+
+	cb(topics);
 }
 
 //DEBUG

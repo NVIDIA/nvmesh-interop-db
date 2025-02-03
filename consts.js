@@ -24,3 +24,12 @@ exports.tableAssociations = {
 	KERNEL: 'kernel',
 	OFED: 'ofed'
 }
+
+exports.components = {
+	MANAGEMENT: 'nvmesh-management'
+
+}
+
+exports.componentTypes = {
+	KAFKA_TOPIC: 'KAFKA_TOPIC'
+}
