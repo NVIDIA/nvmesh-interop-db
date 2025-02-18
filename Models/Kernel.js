@@ -6,7 +6,9 @@ exports.Kernel = (sequelize) => {
 		tableNames.KERNEL, {
 			ID: {
 				type: DataTypes.INTEGER,
-				allowNull: false
+				allowNull: false,
+				autoIncrement: true,
+				primaryKey: true
 			},
 			version: {
 				type: DataTypes.STRING,

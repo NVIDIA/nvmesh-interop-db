@@ -32,15 +32,60 @@ async function printModel(modelFn) {
 	printModels(entities);
 }
 
-exports.connect = async(path) => {
+exports.connect = async(path, cb) => {
 	sequelize = await dbAPI.connect(path);
-}
+
+	if (cb)
+		cb();
+};
 
 exports.getSupportedTopicsByVersion = async (version, cb) => {
 	const topics = await dbAPI.getSupportedKafkaTopics(components.MANAGEMENT, version);
 
 	cb(topics);
-}
+};
+
+exports.getAllArchTypes = async(cb) => {
+	const entities = await dbAPI.getAllArchTypes(ArchType);
+
+	cb(entities);
+};
+
+exports.getAllOperatingSystems = async(cb) => {
+	const entities = await dbAPI.getAllOperatingSystems(OperatingSystem);
+
+	cb(entities);
+};
+
+exports.getAllKernels = async(cb) => {
+	const entities = await dbAPI.getAllKernels(Kernel);
+
+	cb(entities);
+};
+
+exports.getAllOfeds = async(cb) => {
+	const entities = await dbAPI.getAllOfeds(Ofed);
+
+	cb(entities);
+};
+
+exports.getAllSetups = async(cb) => {
+	const setups = await dbAPI.getAllSetups();
+
+	cb(setups);
+};
+
+exports.createSetup = async(setup, cb) => {
+	const result = await dbAPI.createSetup(setup);
+
+	cb(result);
+};
+
+exports.deleteSetupById = async(ID) => {
+	const result = await dbAPI.deleteSetup(ID);
+
+	cb(result);
+};
 
 //DEBUG
 exports.logAllEntities = async () => {
@@ -52,10 +97,10 @@ exports.logAllEntities = async () => {
 		await Promise.all(models.map(m => printModel(m)));
 	} catch (error) {
 		console.log(error);
-	} finally { 
+	} finally {
 		console.log('Done!');
 	}
-}
+};
 
 exports.printMsg = (msg) => {
 	console.log(`printMsg invoked with ${msg}`);

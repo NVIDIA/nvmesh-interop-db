@@ -7,6 +7,8 @@ exports.Ofed = (sequelize) => {
 			ID: {
 				type: DataTypes.INTEGER,
 				allowNull: false,
+				autoIncrement: true,
+				primaryKey: true
 			},
 			version: {
 				type: DataTypes.STRING,

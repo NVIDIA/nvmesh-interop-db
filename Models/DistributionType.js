@@ -7,10 +7,12 @@ exports.DistributionType = (sequelize) => {
 			ID: {
 				type: DataTypes.INTEGER,
 				allowNull: false,
+				autoIncrement: true,
+				primaryKey: true
 			},
 			name: {
 				type: DataTypes.STRING,
-				allowNull: false,
+				allowNull: false
 			}
 		}, {
 			tableName: tableNames.DISTRIBUTION_TYPE,
