@@ -81,8 +81,8 @@ exports.createSetup = async(setup, cb) => {
 	cb(result);
 };
 
-exports.deleteSetupById = async(ID) => {
-	const result = await dbAPI.deleteSetup(ID);
+exports.deleteSetupById = async(ID, cb) => {
+	const result = await dbAPI.deleteSetup({ ID });
 
 	cb(result);
 };

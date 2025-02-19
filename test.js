@@ -21,17 +21,20 @@ async function test() {
 		console.log(JSON.stringify(kernels));
 	});
 
+
 	interopDB.getAllOperatingSystems((operatingSystems) => {
 		console.log(JSON.stringify(operatingSystems));
 	});
+	*/
+
 
 	interopDB.getAllSetups((setups) => {
 		console.log(JSON.stringify(setups));
 	});
-	*/
 
-	
-	interopDB.createSetup({ 
+/*
+
+	await interopDB.createSetup({
 		name: 'Create test',
 		description: 'new description',
 		archTypeID: 2,
@@ -42,7 +45,10 @@ async function test() {
 		console.log('created', setup);
 	});
 
-	/*interopDB.deleteSetupById({ name: 'Create test' });*/
+	interopDB.deleteSetupById(6, (results) => {
+		console.log(results);
+	});
+	*/
 }
 
 test();
