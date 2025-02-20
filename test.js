@@ -28,9 +28,15 @@ async function test() {
 	*/
 
 
+	/*
 	interopDB.getAllSetups((setups) => {
 		console.log(JSON.stringify(setups));
 	});
+	*/
+
+	/*interopDB.deleteSetups([{ ID: '2' }, { ID: '3' }], (results) => {
+		console.log(results);
+	});*/
 
 /*
 
@@ -48,6 +54,18 @@ async function test() {
 	interopDB.deleteSetupById(6, (results) => {
 		console.log(results);
 	});
+
+	interopDB.updateSetup({
+		ID: 2,
+		name: 'Create test',
+		description: 'new description',
+		archTypeID: 2,
+		kernelID: 9,
+		ofedID: 16,
+		operatingSystemID: 1
+	}, (results) => {
+		console.log(results);
+	})
 	*/
 }
 

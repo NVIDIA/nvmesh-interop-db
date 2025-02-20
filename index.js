@@ -1,4 +1,4 @@
-const { Sequelize } = require('sequelize');
+const { Op, Sequelize } = require('sequelize');
 const { ArchType } = require('./Models/ArchType.js');
 const { DistributionType } = require('./Models/DistributionType.js');
 const { Ofed } = require('./Models/Ofed.js');
@@ -81,11 +81,17 @@ exports.createSetup = async(setup, cb) => {
 	cb(result);
 };
 
-exports.deleteSetupById = async(ID, cb) => {
-	const result = await dbAPI.deleteSetup({ ID });
+exports.deleteSetups = async(setups, cb) => {
+	const results = await dbAPI.deleteSetups({ ID: { [Op.in]: setups.map((s) => s.ID) } });
 
-	cb(result);
+	cb(results);
 };
+
+exports.updateSetup = async(setup, cb) => {
+	const results = await dbAPI.updateSetup(setup);
+
+	cb(results);
+}
 
 //DEBUG
 exports.logAllEntities = async () => {

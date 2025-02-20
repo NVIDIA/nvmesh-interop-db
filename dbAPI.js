@@ -111,9 +111,12 @@ let scope = {
 	createSetup: async(setup) => {
 		return await Setup(sequelize).create(setup);
 	},
-	deleteSetup: async(whereObj) => {
+	deleteSetups: async(whereObj) => {
 		return await Setup(sequelize).destroy({ where: whereObj });
-	}
+	},
+	updateSetup: async(setup) => {
+		return await Setup(sequelize).update(setup, { where: { ID: setup.ID } });
+	},
 };
 
 function warpWithTryCatch(fn) {
