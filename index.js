@@ -69,8 +69,8 @@ exports.getAllOfeds = async(cb) => {
 	cb(entities);
 };
 
-exports.getAllSetups = async(cb) => {
-	const setups = await dbAPI.getAllSetups();
+exports.getAllSetups = async(queryObj, cb) => {
+	const setups = await dbAPI.getAllSetups(queryObj);
 
 	cb(setups);
 };

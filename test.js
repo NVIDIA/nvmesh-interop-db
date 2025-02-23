@@ -1,4 +1,5 @@
 const interopDB = require('./index.js');
+const { ArchType } = require('./Models/ArchType.js');
 
 async function test() {
 	await interopDB.connect('/home/tomzan/projects/interopDB/InteropDB');
@@ -27,12 +28,20 @@ async function test() {
 	});
 	*/
 
+	interopDB.getAllSetups({
+		sort: { 'ofed.version': '5.4-3.5.8.0' },
+		filter: { 'ofed.version': '5.4-3.5.8.0' },
+		skip: 0,
+		limit: 10
+	}, (setups) => {
+			if (setups.error)
+				return console.log('ERROR: ', setups.error);
 
-	/*
-	interopDB.getAllSetups((setups) => {
-		console.log(JSON.stringify(setups));
-	});
-	*/
+			for (let setup of setups.data) {
+				console.log(JSON.stringify(setup));
+			}
+		}
+	);
 
 	/*interopDB.deleteSetups([{ ID: '2' }, { ID: '3' }], (results) => {
 		console.log(results);

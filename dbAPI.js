@@ -94,8 +94,10 @@ let scope = {
 			include: [{ model: Component(sequelize), where: { 'name': component }, as: tableAssociations.COMPONENT }]
 		});
 	},
-	getAllSetups: async() => {
-		const setups = await Setup(sequelize).findAll({
+	getAllSetups: async(queryObj) => {
+		let filtSortObj = parseQueryObj(queryObj);
+
+		let findObj = {
 			include: [
 				{ model: ArchType(sequelize), as: tableAssociations.ARCH_TYPE },
 				{ model: OperatingSystem(sequelize), as: tableAssociations.OPERATING_SYSTEM, include: [
@@ -103,8 +105,11 @@ let scope = {
 				] },
 				{ model: Kernel(sequelize), as: tableAssociations.KERNEL },
 				{ model: Ofed(sequelize), as: tableAssociations.OFED }
-			]
-		});
+			],
+			...filtSortObj
+		}
+
+		const setups = await Setup(sequelize).findAll(findObj);
 
 		return setups;
 	},
@@ -118,6 +123,57 @@ let scope = {
 		return await Setup(sequelize).update(setup, { where: { ID: setup.ID } });
 	},
 };
+
+function parseQueryObj({sort, filter, skip, limit}) {
+	const results = {};
+
+	if (!isEmpty(sort))
+		results['order'] = convertSortToOrder(sort);
+
+	if (!isEmpty(filter))
+		results['where'] = convertFilterToWhere(filter);
+
+	if (skip)
+		results['offset'] = skip;
+
+	if (limit)
+		results['limit'] = limit;
+
+	return results;
+}
+
+function isEmpty(obj) {
+	for (const prop in obj) {
+		if (Object.hasOwn(obj, prop)) {
+			return false;
+		}
+	}
+
+	return true;
+  }
+
+function convertFilterToWhere(filter) {
+	const where = {};
+
+	for (let key in filter)
+		where[key.includes('.') ? `$${key}$` : key] = filter[key];
+
+	return where;
+}
+
+function convertSortToOrder(sort) {
+	return Object.entries(sort).map(([k, v]) => {
+		const parts = k.split('.');
+
+		if (parts.length === 1)
+			return [k, v === 1 ? 'ASC' : 'DESC'];
+
+		const assocation = Object.keys(tableAssociations).find(key => tableAssociations[key] === parts[0]);
+
+		if (assocation)
+			return [tableAssociations[assocation], parts[1], v === 1 ? 'ASC' : 'DESC'];
+	});
+}
 
 function warpWithTryCatch(fn) {
 	let response = {};
