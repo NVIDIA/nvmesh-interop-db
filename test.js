@@ -30,7 +30,7 @@ async function test() {
 
 	interopDB.getAllSetups({
 		sort: { 'ofed.version': '5.4-3.5.8.0' },
-		filter: { 'ofed.version': '5.4-3.5.8.0' },
+		filter: { 'description': { $regex: 'd', $option: 'i' } },
 		skip: 0,
 		limit: 10
 	}, (setups) => {

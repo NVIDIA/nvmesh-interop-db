@@ -1,4 +1,4 @@
-const { Sequelize } = require('sequelize');
+const { Op, Sequelize } = require('sequelize');
 const { ArchType } = require('./Models/ArchType.js');
 const { Component } = require('./Models/Component.js');
 const { ComponentType } = require('./Models/ComponentType.js');
@@ -152,11 +152,21 @@ function isEmpty(obj) {
 	return true;
   }
 
+function isObject(variable) {
+	return typeof variable === 'object' && !Array.isArray(variable) && variable !== null;
+}
+
 function convertFilterToWhere(filter) {
 	const where = {};
+	let value;
 
-	for (let key in filter)
-		where[key.includes('.') ? `$${key}$` : key] = filter[key];
+	for (let key in filter) {
+		value = isObject(filter[key]) && '$regex' in filter[key]
+			? { [Op.like]: `%${filter[key]['$regex']}%` }
+			: filter[key]
+
+		where[key.includes('.') ? `$${key}$` : key] = value;
+	}
 
 	return where;
 }
@@ -164,14 +174,15 @@ function convertFilterToWhere(filter) {
 function convertSortToOrder(sort) {
 	return Object.entries(sort).map(([k, v]) => {
 		const parts = k.split('.');
+		const direction = v === 1 ? 'ASC' : 'DESC';
 
 		if (parts.length === 1)
-			return [k, v === 1 ? 'ASC' : 'DESC'];
+			return [k, direction];
 
 		const assocation = Object.keys(tableAssociations).find(key => tableAssociations[key] === parts[0]);
 
 		if (assocation)
-			return [tableAssociations[assocation], parts[1], v === 1 ? 'ASC' : 'DESC'];
+			return [tableAssociations[assocation], parts[1], direction];
 	});
 }
 
