@@ -91,7 +91,13 @@ exports.updateSetup = async(setup, cb) => {
 	const results = await dbAPI.updateSetup(setup);
 
 	cb(results);
-}
+};
+
+exports.getAllReleases = async(queryObj, cb) => {
+	const results = await dbAPI.getAllComponentVersions(queryObj);
+
+	cb(results);
+};
 
 //DEBUG
 exports.logAllEntities = async () => {

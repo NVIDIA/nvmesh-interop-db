@@ -122,6 +122,24 @@ let scope = {
 	updateSetup: async(setup) => {
 		return await Setup(sequelize).update(setup, { where: { ID: setup.ID } });
 	},
+	getAllComponentVersions: async(queryObj) => {
+		let filtSortObj = parseQueryObj(queryObj);
+
+		let findObj = {
+			include: [
+				{ 
+					model: Component(sequelize), as: tableAssociations.COMPONENT , include: [
+						{ model: ComponentType(sequelize), as: tableAssociations.COMPONENT_TYPE }
+					]
+				}
+			],
+			...filtSortObj
+		}
+
+		const componentVersions = await ComponentVersion(sequelize).findAll(findObj);
+
+		return componentVersions;
+	}
 };
 
 function parseQueryObj({sort, filter, skip, limit}) {
@@ -172,18 +190,9 @@ function convertFilterToWhere(filter) {
 }
 
 function convertSortToOrder(sort) {
-	return Object.entries(sort).map(([k, v]) => {
-		const parts = k.split('.');
-		const direction = v === 1 ? 'ASC' : 'DESC';
-
-		if (parts.length === 1)
-			return [k, direction];
-
-		const assocation = Object.keys(tableAssociations).find(key => tableAssociations[key] === parts[0]);
-
-		if (assocation)
-			return [tableAssociations[assocation], parts[1], direction];
-	});
+	return Object.entries(sort).map(([k, v]) =>
+		[...k.split('.'), v === 1 ? 'ASC' : 'DESC']
+	);
 }
 
 function warpWithTryCatch(fn) {

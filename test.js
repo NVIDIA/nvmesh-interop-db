@@ -28,7 +28,7 @@ async function test() {
 	});
 	*/
 
-	interopDB.getAllSetups({
+	/*interopDB.getAllSetups({
 		sort: { 'ofed.version': '5.4-3.5.8.0' },
 		filter: { 'description': { $regex: 'd', $option: 'i' } },
 		skip: 0,
@@ -76,6 +76,18 @@ async function test() {
 		console.log(results);
 	})
 	*/
+
+	interopDB.getAllReleases({
+		sort: { 'component.componentType.name': 1 }
+	}, (results) => {
+		if (results)
+			if (results.error)
+				return console.log('ERROR: ', results.error);
+
+			for (let result of results.data) {
+				console.log(JSON.stringify(result));
+			}
+	});
 }
 
 test();
