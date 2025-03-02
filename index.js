@@ -52,22 +52,40 @@ exports.getAllArchTypes = async(cb) => {
 };
 
 exports.getAllOperatingSystems = async(cb) => {
-	const entities = await dbAPI.getAllOperatingSystems(OperatingSystem);
+	const entities = await dbAPI.getAllOperatingSystems();
 
 	cb(entities);
 };
 
 exports.getAllKernels = async(cb) => {
-	const entities = await dbAPI.getAllKernels(Kernel);
+	const entities = await dbAPI.getAllKernels();
 
 	cb(entities);
 };
 
 exports.getAllOfeds = async(cb) => {
-	const entities = await dbAPI.getAllOfeds(Ofed);
+	const entities = await dbAPI.getAllOfeds();
 
 	cb(entities);
 };
+
+exports.getAllComponentTypes = async(cb) => {
+	const entities = await dbAPI.getAllComponentTypes();
+
+	cb(entities);
+};
+
+exports.getAllComponents = async(cb) => {
+	const entities = await dbAPI.getAllComponents();
+
+	cb(entities);
+};
+
+exports.getComponentsByTypeID = async(componentTypeID, cb) => {
+	const entities = await dbAPI.getComponentsByTypeID(componentTypeID);
+
+	cb(entities);
+}
 
 exports.getAllSetups = async(queryObj, cb) => {
 	const setups = await dbAPI.getAllSetups(queryObj);

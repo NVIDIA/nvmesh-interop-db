@@ -26,9 +26,7 @@ async function test() {
 	interopDB.getAllOperatingSystems((operatingSystems) => {
 		console.log(JSON.stringify(operatingSystems));
 	});
-	*/
-
-	/*interopDB.getAllSetups({
+	interopDB.getAllSetups({
 		sort: { 'ofed.version': '5.4-3.5.8.0' },
 		filter: { 'description': { $regex: 'd', $option: 'i' } },
 		skip: 0,
@@ -46,7 +44,6 @@ async function test() {
 	/*interopDB.deleteSetups([{ ID: '2' }, { ID: '3' }], (results) => {
 		console.log(results);
 	});*/
-
 /*
 
 	await interopDB.createSetup({
@@ -75,7 +72,6 @@ async function test() {
 	}, (results) => {
 		console.log(results);
 	})
-	*/
 
 	interopDB.getAllReleases({
 		sort: { 'component.componentType.name': 1 }
@@ -87,6 +83,20 @@ async function test() {
 			for (let result of results.data) {
 				console.log(JSON.stringify(result));
 			}
+	});
+
+	*/
+
+	interopDB.getAllComponentTypes((results) => {
+		console.log(JSON.stringify(results));
+	});
+
+	interopDB.getAllComponents((results) => {
+		console.log(JSON.stringify(results));
+	});
+
+	interopDB.getComponentsByTypeID(1, (results) => {
+		console.log(JSON.stringify(results));
 	});
 }
 

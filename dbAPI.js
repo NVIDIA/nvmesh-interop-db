@@ -88,6 +88,25 @@ let scope = {
 
 		return ofeds.map((ofed) => ofed.dataValues);
 	},
+	getAllComponentTypes: async() => {
+		const componentTypes = await ComponentType(sequelize).findAll({});
+
+		return  componentTypes.map((componentType) => componentType.dataValues);
+	},
+	getAllComponents: async() => {
+		const components = await Component(sequelize).findAll({});
+
+		return components.map((component) => component.dataValues);
+	},
+	getComponentsByTypeID: async(componentTypeID) => {
+		let components = await Component(sequelize).findAll({
+			include: [
+				{ model: ComponentType(sequelize), as: tableAssociations.COMPONENT_TYPE, where: { ID: componentTypeID } }
+			]
+		});
+
+		return components.map((component) => component.dataValues);
+	},
 	getComponentVersion: async(component, version) => {
 		return await ComponentVersion(sequelize).findOne({
 			where: { version: version },
@@ -127,7 +146,7 @@ let scope = {
 
 		let findObj = {
 			include: [
-				{ 
+				{
 					model: Component(sequelize), as: tableAssociations.COMPONENT , include: [
 						{ model: ComponentType(sequelize), as: tableAssociations.COMPONENT_TYPE }
 					]
