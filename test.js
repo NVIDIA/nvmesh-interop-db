@@ -2,7 +2,7 @@ const interopDB = require('./index.js');
 const { ArchType } = require('./Models/ArchType.js');
 
 async function test() {
-	await interopDB.connect('/home/tomzan/projects/interopDB/InteropDB');
+	await interopDB.connect('/home/tomzan/projects/interop-db/InteropDB');
 
 	/*
 	await interopDB.logAllEntities();
@@ -73,8 +73,8 @@ async function test() {
 		console.log(results);
 	})
 
+	*/
 	interopDB.getAllReleases({
-		sort: { 'component.componentType.name': 1 }
 	}, (results) => {
 		if (results)
 			if (results.error)
@@ -85,8 +85,18 @@ async function test() {
 			}
 	});
 
-	*/
+	/*
+	interopDB.getAllComponentSetups((results) => {
+		if (results)
+			if (results.error)
+				return console.log('ERROR: ', results.error);
 
+			for (let result of results.data) {
+				console.log(JSON.stringify(result));
+			}
+	});
+
+	/*
 	interopDB.getAllComponentTypes((results) => {
 		console.log(JSON.stringify(results));
 	});
@@ -98,6 +108,7 @@ async function test() {
 	interopDB.getComponentsByTypeID(1, (results) => {
 		console.log(JSON.stringify(results));
 	});
+	*/
 }
 
 test();

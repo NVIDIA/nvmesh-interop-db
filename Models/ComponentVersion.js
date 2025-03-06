@@ -1,5 +1,6 @@
 const { DataTypes } = require('sequelize');
-const { Component } = require('./Component');
+const { Component } = require('./Component.js');
+const { Setup } = require('./Setup.js');
 const { tableNames, tableAssociations } = require('../consts.js');
 
 exports.ComponentVersion = (sequelize) => {
@@ -8,6 +9,8 @@ exports.ComponentVersion = (sequelize) => {
 			ID: {
 				type: DataTypes.INTEGER,
 				allowNull: false,
+				autoIncrement: true,
+				primaryKey: true
 			},
 			version: {
 				type: DataTypes.STRING,
@@ -24,6 +27,13 @@ exports.ComponentVersion = (sequelize) => {
 			allowNull: false
 		},
 		as: tableAssociations.COMPONENT
+	});
+
+	componentVersion.belongsToMany(Setup(sequelize), {
+		through: tableAssociations.COMPONENT_VERSION_SETUP,
+		foreignKey: 'componentVersionID',
+		otherKey: 'setupID',
+		as: 'setups'
 	});
 
 	return componentVersion;

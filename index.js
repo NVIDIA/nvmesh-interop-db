@@ -117,6 +117,12 @@ exports.getAllReleases = async(queryObj, cb) => {
 	cb(results);
 };
 
+exports.getAllComponentSetups = async(cb) => {
+	const results = await dbAPI.getAllComponentSetups();
+
+	cb(results);
+}
+
 //DEBUG
 exports.logAllEntities = async () => {
 	try {

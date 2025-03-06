@@ -9,7 +9,8 @@ exports.tableNames = {
 	KERNEL: 'Kernel',
 	OFED: 'Ofed',
 	OPERATING_SYSTEM: 'OperatingSystem',
-	SETUP: 'Setup'
+	SETUP: 'Setup',
+	COMPONENT_VERSION_SETUP: 'ComponentVersionSetup'
 }
 
 exports.tableAssociations = {
@@ -22,7 +23,9 @@ exports.tableAssociations = {
 	ARCH_TYPE: 'archType',
 	OPERATING_SYSTEM: 'operatingSystem',
 	KERNEL: 'kernel',
-	OFED: 'ofed'
+	OFED: 'ofed',
+	SETUP: 'setup',
+	COMPONENT_VERSION_SETUP: 'ComponentVersionSetup'
 }
 
 exports.components = {

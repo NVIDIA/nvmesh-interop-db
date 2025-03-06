@@ -3,6 +3,7 @@ const { ArchType } = require('./Models/ArchType.js');
 const { Component } = require('./Models/Component.js');
 const { ComponentType } = require('./Models/ComponentType.js');
 const { ComponentVersion } = require('./Models/ComponentVersion.js');
+const { ComponentVersionSetups } = require('./Models/ComponentVersionSetup.js');
 const { ComponentCompatibility } = require('./Models/ComponentCompatibility.js');
 const { components, tableAssociations, componentTypes } = require('./consts.js');
 const { OperatingSystem } = require('./Models/OperatingSystem.js');
@@ -145,19 +146,32 @@ let scope = {
 		let filtSortObj = parseQueryObj(queryObj);
 
 		let findObj = {
-			include: [
-				{
-					model: Component(sequelize), as: tableAssociations.COMPONENT , include: [
-						{ model: ComponentType(sequelize), as: tableAssociations.COMPONENT_TYPE }
-					]
-				}
-			],
+			include: [{
+				model: Component(sequelize), as: tableAssociations.COMPONENT , include: [
+					{ model: ComponentType(sequelize), as: tableAssociations.COMPONENT_TYPE }
+				]
+			}, {
+				model: Setup(sequelize),
+				as: 'setups',
+				through: { attributes: [] }
+			}],
 			...filtSortObj
 		}
 
 		const componentVersions = await ComponentVersion(sequelize).findAll(findObj);
 
 		return componentVersions;
+	},
+	getAllComponentSetups: async() => {
+		let findObj = {
+			include: [{
+				model: ComponentVersion(sequelize),
+				as: tableAssociations.COMPONENT_VERSION,
+				required: true,
+			}]
+		};
+
+		return await ComponentVersionSetups(sequelize).findAll(findObj);
 	}
 };
 
