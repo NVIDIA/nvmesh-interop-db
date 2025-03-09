@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
-const { tableNames, tableAssociations } = require('../consts.js');
+const { tableNames } = require('../consts.js');
 
-exports.ComponentVersionSetups = (sequelize) => {
+exports.ComponentVersionSetup = (sequelize) => {
 	let componentSetup = sequelize.define(
 		tableNames.COMPONENT_VERSION_SETUP, {
 			ID: {

@@ -94,10 +94,21 @@ let scope = {
 
 		return  componentTypes.map((componentType) => componentType.dataValues);
 	},
-	getAllComponents: async() => {
-		const components = await Component(sequelize).findAll({});
+	getAllComponents: async(queryObj, eagerLoading) => {
+		const filtSortObj = parseQueryObj(queryObj);
 
-		return components.map((component) => component.dataValues);
+		const findObj = {
+			...filtSortObj
+		};
+
+		if (eagerLoading)
+			findObj.include = [{
+				model: ComponentType(sequelize), as: tableAssociations.COMPONENT_TYPE
+			}];
+
+		const components = await Component(sequelize).findAll(findObj);
+
+		return components;
 	},
 	getComponentsByTypeID: async(componentTypeID) => {
 		let components = await Component(sequelize).findAll({
@@ -152,8 +163,13 @@ let scope = {
 				]
 			}, {
 				model: Setup(sequelize),
-				as: 'setups',
-				through: { attributes: [] }
+				as: 'setups'
+			}, {
+				model: Component(sequelize),
+				as: 'requirements'
+			}, {
+				model: ComponentVersion(sequelize),
+				as: 'compatibilities'
 			}],
 			...filtSortObj
 		}
@@ -172,6 +188,39 @@ let scope = {
 		};
 
 		return await ComponentVersionSetups(sequelize).findAll(findObj);
+	},
+	updateRelease: async(release) => {
+		const transaction = await sequelize.transaction();
+
+		try {
+			const componentVersion = await ComponentVersion(sequelize).findByPk(release.ID, {
+				model: Setup(sequelize),
+				as: 'setups'
+			});
+
+			if (!componentVersion) {
+				throw new Error('ComponentVersion not found');
+			}
+
+			await componentVersion.update(release, { where: { ID: release.ID }, transaction });
+
+			if (release.setups)
+				await componentVersion.setSetups(release.setups.map((s) => s.ID), { transaction });
+
+			if (release.requirements)
+				await componentVersion.setRequirements(release.requirements.map((r) => r.ID), { transaction });
+
+			if (release.compatibilities)
+				await componentVersion.setCompatibilities(release.compatibilities.map((c) => c.ID), { transaction });
+
+			await transaction.commit();
+
+			return { success: true };
+		} catch (error) {
+			await transaction.rollback();
+
+			return { success: false, error };
+		}
 	}
 };
 

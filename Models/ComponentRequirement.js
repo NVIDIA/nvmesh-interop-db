@@ -1,7 +1,5 @@
 const { DataTypes } = require('sequelize');
-const { Component } = require('./Component.js');
-const { ComponentVersion } = require('./ComponentVersion.js');
-const { tableNames, tableAssociations } = require('../consts.js');
+const { tableNames } = require('../consts.js');
 
 exports.ComponentRequirement = (sequelize) => {
 	let componentRequirement = sequelize.define(
@@ -9,26 +7,14 @@ exports.ComponentRequirement = (sequelize) => {
 			ID: {
 				type: DataTypes.INTEGER,
 				allowNull: false,
+				autoIncrement: true,
+				primaryKey: true
 			}
 		}, {
 			tableName: tableNames.COMPONENT_REQUIREMENT,
 			timestamps: false
 		}
 	);
-
-	componentRequirement.belongsTo(ComponentVersion(sequelize), {
-		foreignKey: {
-			allowNull: false
-		},
-		as: tableAssociations.COMPONENT_VERSION
-	});
-
-	componentRequirement.belongsTo(Component(sequelize), {
-		foreignKey: {
-			allowNull: false
-		},
-		as: tableAssociations.COMPONENT
-	});
 
 	return componentRequirement;
 }

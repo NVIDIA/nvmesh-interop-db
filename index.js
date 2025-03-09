@@ -75,10 +75,10 @@ exports.getAllComponentTypes = async(cb) => {
 	cb(entities);
 };
 
-exports.getAllComponents = async(cb) => {
-	const entities = await dbAPI.getAllComponents();
+exports.getAllComponents = async(queryObj, eagerLoading=false, cb) => {
+	const results = await dbAPI.getAllComponents(queryObj, eagerLoading);
 
-	cb(entities);
+	cb(results);
 };
 
 exports.getComponentsByTypeID = async(componentTypeID, cb) => {
@@ -121,7 +121,13 @@ exports.getAllComponentSetups = async(cb) => {
 	const results = await dbAPI.getAllComponentSetups();
 
 	cb(results);
-}
+};
+
+exports.updateRelease = async(release, cb) => {
+	const results = await dbAPI.updateRelease(release);
+
+	cb(results);
+};
 
 //DEBUG
 exports.logAllEntities = async () => {
