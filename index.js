@@ -129,6 +129,24 @@ exports.updateRelease = async(release, cb) => {
 	cb(results);
 };
 
+exports.countSetups = async(cb) => {
+	const results = await dbAPI.countEntities(Setup);
+
+	cb(results);
+};
+
+exports.countReleases = async(cb) => {
+	const results = await dbAPI.countEntities(ComponentVersion);
+
+	cb(results);
+};
+
+exports.countComponents = async(cb) => {
+	const results = await dbAPI.countEntities(Component);
+
+	cb(results);
+};
+
 //DEBUG
 exports.logAllEntities = async () => {
 	try {

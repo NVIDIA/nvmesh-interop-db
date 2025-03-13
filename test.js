@@ -44,6 +44,7 @@ async function test() {
 	/*interopDB.deleteSetups([{ ID: '2' }, { ID: '3' }], (results) => {
 		console.log(results);
 	});*/
+
 /*
 
 	await interopDB.createSetup({
@@ -75,6 +76,7 @@ async function test() {
 
 	*/
 
+	
 	interopDB.getAllReleases({
 		filter: { ID: 6 }
 	}, (results) => {
@@ -86,7 +88,7 @@ async function test() {
 				console.log(JSON.stringify(result));
 			}
 	});
-
+/*
 	interopDB.updateRelease({
 		"ID":6,
 		"version":"7.0.16",
@@ -98,7 +100,7 @@ async function test() {
 	}, (results) => {
 		console.log(results);
 	});
-	/*
+
 	interopDB.updateRelease({
 			"ID":1,
 			"version":"3.1.0",
@@ -196,6 +198,10 @@ async function test() {
 		console.log(JSON.stringify(results));
 	});
 	*/
+
+	//interopDB.countReleases((results) => { console.log(results); });
+
+	interopDB.countComponents((results) => { console.log(results); });
 }
 
 test();

@@ -221,6 +221,11 @@ let scope = {
 
 			return { success: false, error };
 		}
+	},
+	countEntities: async(entity) => {
+		const count = await entity(sequelize).count();
+
+		return count;
 	}
 };
 
