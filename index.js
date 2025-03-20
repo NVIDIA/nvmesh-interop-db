@@ -39,8 +39,8 @@ exports.connect = async(path, cb) => {
 		cb();
 };
 
-exports.getSupportedTopicsByVersion = async (version, cb) => {
-	const topics = await dbAPI.getSupportedKafkaTopics(components.MANAGEMENT, version);
+exports.getSupportedKafkaTopics = async (component, version, cb) => {
+	const topics = await dbAPI.getSupportedKafkaTopics(component, version);
 
 	cb(topics);
 };
