@@ -29,7 +29,8 @@ exports.ComponentVersion = (sequelize) => {
 		foreignKey: {
 			allowNull: false
 		},
-		as: tableAssociations.COMPONENT
+		as: tableAssociations.COMPONENT,
+		foreignKey: 'componentID'
 	});
 
 	componentVersion.belongsToMany(Setup(sequelize), {

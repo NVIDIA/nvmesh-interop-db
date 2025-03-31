@@ -239,12 +239,19 @@ let scope = {
 
 			await transaction.commit();
 
-			return { success: true, data: componentVersion };
-		} catch (error) {
-			await transaction.rollback();
+			if (componentVersion.data?.error)
+				throw (componentVersion.data.error);
 
-			return { success: false, error };
+			return componentVersion;
+		} catch (error) {
+			if (transaction.finished !== 'commit')
+				await transaction.rollback();
+
+			throw (error);
 		}
+	},
+	deleteReleases: async(whereObj) => {
+		return await ComponentVersion(sequelize).destroy({ where: whereObj });
 	},
 	countEntities: async(entity) => {
 		const count = await entity(sequelize).count();

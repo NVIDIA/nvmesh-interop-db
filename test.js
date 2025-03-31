@@ -88,6 +88,24 @@ async function test() {
 				console.log(JSON.stringify(result));
 			}
 	});
+
+	interopDB.deleteReleases([{ ID: 6 }], (results) => {
+		console.log(results);
+	});
+/*
+	interopDB.createRelease({
+		version: "1.1.1",
+		setups: [
+		],
+		requirements: [
+		],
+		compatibilities: [
+		],
+		componentID: 14,
+		componentTypeID: 2,
+	  }, (results) => {
+		console.log(results);
+	});
 /*
 	interopDB.updateRelease({
 		"ID":6,

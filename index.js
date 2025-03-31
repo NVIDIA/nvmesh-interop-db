@@ -105,6 +105,12 @@ exports.deleteSetups = async(setups, cb) => {
 	cb(results);
 };
 
+exports.deleteReleases = async(releases, cb) => {
+	const results = await dbAPI.deleteReleases({ ID: { [Op.in]: releases.map((r) => r.ID) } });
+
+	cb(results);
+};
+
 exports.updateSetup = async(setup, cb) => {
 	const results = await dbAPI.updateSetup(setup);
 
