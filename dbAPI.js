@@ -222,6 +222,30 @@ let scope = {
 			return { success: false, error };
 		}
 	},
+	createRelease: async(release) => {
+		const transaction = await sequelize.transaction();
+
+		try {
+			const componentVersion = await ComponentVersion(sequelize).create(release, { transaction });
+
+			if (release.setups)
+				await componentVersion.setSetups(release.setups.map((s) => s.ID), { transaction });
+
+			if (release.requirements)
+				await componentVersion.setRequirements(release.requirements.map((r) => r.ID), { transaction });
+
+			if (release.compatibilities)
+				await componentVersion.setCompatibilities(release.compatibilities.map((c) => c.ID), { transaction });
+
+			await transaction.commit();
+
+			return { success: true, data: componentVersion };
+		} catch (error) {
+			await transaction.rollback();
+
+			return { success: false, error };
+		}
+	},
 	countEntities: async(entity) => {
 		const count = await entity(sequelize).count();
 

@@ -117,6 +117,12 @@ exports.getAllReleases = async(queryObj, cb) => {
 	cb(results);
 };
 
+exports.createRelease = async(release, cb) => {
+	const result = await dbAPI.createRelease(release);
+
+	cb(result);
+};
+
 exports.getAllComponentSetups = async(cb) => {
 	const results = await dbAPI.getAllComponentSetups();
 
