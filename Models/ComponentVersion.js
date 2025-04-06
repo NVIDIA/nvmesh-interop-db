@@ -1,10 +1,5 @@
 const { DataTypes } = require('sequelize');
-const { Component } = require('./Component.js');
-const { ComponentVersionSetup } = require('./ComponentVersionSetup.js');
-const { Setup } = require('./Setup.js');
-const { tableNames, tableAssociations } = require('../consts.js');
-const { ComponentRequirement } = require('./ComponentRequirement.js');
-const { ComponentCompatibility } = require('./ComponentCompatibility.js');
+const { tableNames } = require('../consts.js');
 
 exports.ComponentVersion = (sequelize) => {
 	let componentVersion = sequelize.define(
@@ -25,40 +20,5 @@ exports.ComponentVersion = (sequelize) => {
 		}
 	);
 
-	componentVersion.belongsTo(Component(sequelize), {
-		foreignKey: {
-			allowNull: false
-		},
-		as: tableAssociations.COMPONENT,
-		foreignKey: 'componentID'
-	});
-
-	componentVersion.belongsToMany(Setup(sequelize), {
-		through: {
-			model: ComponentVersionSetup(sequelize),
-		},
-		foreignKey: 'componentVersionID',
-		otherKey: 'setupID',
-		as: 'setups'
-	});
-
-	componentVersion.belongsToMany(Component(sequelize), {
-		through: {
-			model: ComponentRequirement(sequelize),
-		},
-		foreignKey: 'componentVersionID',
-		otherKey: 'componentID',
-		as: 'requirements'
-	});
-
-	componentVersion.belongsToMany(componentVersion, {
-		through: {
-			model: ComponentCompatibility(sequelize),
-		},
-		foreignKey: 'sourceVersionID',
-		otherKey: 'destinationVersionID',
-		as: 'compatibilities'
-	});
-
 	return componentVersion;
-}
+};

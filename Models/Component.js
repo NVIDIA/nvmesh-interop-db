@@ -1,6 +1,5 @@
 const { DataTypes } = require('sequelize');
-const { ComponentType } = require('./ComponentType.js');
-const { tableNames, tableAssociations } = require('../consts.js');
+const { tableNames } = require('../consts.js');
 
 exports.Component = (sequelize) => {
 	let component = sequelize.define(
@@ -18,13 +17,6 @@ exports.Component = (sequelize) => {
 			timestamps: false
 		}
 	);
-
-	component.belongsTo(ComponentType(sequelize), {
-		foreignKey: {
-			allowNull: false
-		},
-		as: tableAssociations.COMPONENT_TYPE
-	});
 
 	return component;
 }

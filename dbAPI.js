@@ -1,16 +1,6 @@
 const { Op, Sequelize } = require('sequelize');
-const { ArchType } = require('./Models/ArchType.js');
-const { Component } = require('./Models/Component.js');
-const { ComponentType } = require('./Models/ComponentType.js');
-const { ComponentVersion } = require('./Models/ComponentVersion.js');
-const { ComponentVersionSetups } = require('./Models/ComponentVersionSetup.js');
-const { ComponentCompatibility } = require('./Models/ComponentCompatibility.js');
-const { components, tableAssociations, componentTypes } = require('./consts.js');
-const { OperatingSystem } = require('./Models/OperatingSystem.js');
-const { Ofed } = require('./Models/Ofed.js');
-const { Kernel } = require('./Models/Kernel.js');
-const { DistributionType } = require('./Models/DistributionType.js');
-const { Setup } = require('./Models/Setup.js');
+const { Setup, DistributionType, ComponentVersion, ComponentType, ComponentCompatibility, Component, ComponentVersionSetup, Kernel, Ofed, OperatingSystem, ArchType } = require('./Models/Inititializer.js');
+const { tableAssociations, componentTypes } = require('./consts.js');
 
 let sequelize;
 
@@ -34,7 +24,9 @@ let scope = {
 		return await Component(sequelize).findOne({ where: { name: componentID } });
 	},
 	getSupportedKafkaTopics: async(component, version) => {
-		const compatibilities = await ComponentCompatibility(sequelize).findAll({
+		const componentCompatibility = ComponentCompatibility(sequelize);
+
+		const compatibilities = await componentCompatibility.findAll({
 			include: [{
 				model: ComponentVersion(sequelize),
 				as: tableAssociations.SOURCE_VERSION,
@@ -187,7 +179,7 @@ let scope = {
 			}]
 		};
 
-		return await ComponentVersionSetups(sequelize).findAll(findObj);
+		return await ComponentVersionSetup(sequelize).findAll(findObj);
 	},
 	updateRelease: async(release) => {
 		const transaction = await sequelize.transaction();

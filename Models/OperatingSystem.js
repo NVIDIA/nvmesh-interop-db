@@ -1,6 +1,5 @@
 const { DataTypes } = require('sequelize');
-const { DistributionType } = require('./DistributionType');
-const { tableAssociations, tableNames } = require('../consts');
+const { tableNames } = require('../consts');
 
 exports.OperatingSystem = (sequelize) => {
 	let operatingSystem = sequelize.define(
@@ -20,13 +19,6 @@ exports.OperatingSystem = (sequelize) => {
 			timestamps: false
 		}
 	);
-
-	operatingSystem.belongsTo(DistributionType(sequelize), {
-		foreignKey: {
-			allowNull: false
-		},
-		as: tableAssociations.DISTRIBUTION_TYPE
-	});
 
 	return operatingSystem;
 }

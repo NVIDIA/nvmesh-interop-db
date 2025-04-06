@@ -76,7 +76,8 @@ async function test() {
 
 	*/
 
-	
+	/*
+
 	interopDB.getAllReleases({
 		filter: { ID: 6 }
 	}, (results) => {
@@ -92,16 +93,23 @@ async function test() {
 	interopDB.deleteReleases([{ ID: 6 }], (results) => {
 		console.log(results);
 	});
+	*/
+/*
+
+*/
+	interopDB.getSupportedKafkaTopics('nvmesh-management', '3.1.0', (res) =>  {
+		console.log(JSON.stringify(res));
+	});
 /*
 	interopDB.createRelease({
-		version: "1.1.1",
+		version: "1.0.0",
 		setups: [
 		],
 		requirements: [
 		],
 		compatibilities: [
 		],
-		componentID: 14,
+		componentID: 17,
 		componentTypeID: 2,
 	  }, (results) => {
 		console.log(results);
@@ -219,7 +227,7 @@ async function test() {
 
 	//interopDB.countReleases((results) => { console.log(results); });
 
-	interopDB.countComponents((results) => { console.log(results); });
+	//interopDB.countComponents((results) => { console.log(results); });
 }
 
 test();
