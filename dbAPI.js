@@ -55,7 +55,11 @@ let scope = {
 			}]
 		});
 
-		return compatibilities.map((c) => c.destinationVersion.component.name);
+		return compatibilities.reduce((acc, curr) => {
+			(acc[curr.sourceVersion.component.name] ??= []).push(curr.destinationVersion.version);
+
+			return acc;
+		}, {});
 	},
 	getAllArchTypes: async() => {
 		const archTypes = await ArchType(sequelize).findAll({});
