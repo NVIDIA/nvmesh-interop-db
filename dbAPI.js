@@ -56,7 +56,7 @@ let scope = {
 		});
 
 		return compatibilities.reduce((acc, curr) => {
-			(acc[curr.sourceVersion.component.name] ??= []).push(curr.destinationVersion.version);
+			(acc[curr.destinationVersion.component.name] ??= []).push(curr.destinationVersion.version);
 
 			return acc;
 		}, {});
