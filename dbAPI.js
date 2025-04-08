@@ -151,6 +151,9 @@ let scope = {
 	},
 	getAllComponentVersions: async(queryObj) => {
 		let filtSortObj = parseQueryObj(queryObj);
+		let limit = filtSortObj.limit;
+
+		delete filtSortObj.limit;
 
 		let findObj = {
 			include: [{
@@ -170,7 +173,10 @@ let scope = {
 			...filtSortObj
 		}
 
-		const componentVersions = await ComponentVersion(sequelize).findAll(findObj);
+		let componentVersions = await ComponentVersion(sequelize).findAll(findObj);
+
+		if (limit)
+			componentVersions = componentVersions.slice(0, limit);
 
 		return componentVersions;
 	},
@@ -314,6 +320,7 @@ function warpWithTryCatch(fn) {
 
 	return async (...args) => {
 		try {
+			response.error = '';
 			response.data = await fn(...args);
 		} catch (error) {
 			response.error = error;

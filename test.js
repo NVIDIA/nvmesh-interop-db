@@ -76,11 +76,9 @@ async function test() {
 
 	*/
 
-	/*
-
-	interopDB.getAllReleases({
-		filter: { ID: 6 }
-	}, (results) => {
+	
+	const query = JSON.parse('{"filter":{"component.name":{"$regex":"n","$options":"i"}},"sort":{},"skip":0,"limit":10}');
+	interopDB.getAllReleases(query, (results) => {
 		if (results)
 			if (results.error)
 				return console.log('ERROR: ', results.error);
@@ -90,13 +88,13 @@ async function test() {
 			}
 	});
 
+	/*
 	interopDB.deleteReleases([{ ID: 6 }], (results) => {
 		console.log(results);
 	});
-	*/
 /*
 
-*/
+
 	interopDB.getSupportedKafkaTopics('nvmesh-management', '3.1.0', (res) =>  {
 		console.log(JSON.stringify(res));
 	});
