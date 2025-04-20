@@ -177,3 +177,9 @@ exports.logAllEntities = async () => {
 exports.printMsg = (msg) => {
 	console.log(`printMsg invoked with ${msg}`);
 };
+
+exports.getSupportedMongoCollections = async(version, cb) => {
+	const collections = await dbAPI.getSupportedMongoCollections(version);
+
+	cb(collections);
+};

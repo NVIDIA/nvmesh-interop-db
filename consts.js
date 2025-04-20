@@ -34,5 +34,6 @@ exports.components = {
 }
 
 exports.componentTypes = {
-	KAFKA_TOPIC: 'KAFKA_TOPIC'
+	KAFKA_TOPIC: 'KAFKA_TOPIC',
+	MONGO_COLLECTION: 'MONGODB_COLLECTION'
 }

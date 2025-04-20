@@ -76,8 +76,11 @@ async function test() {
 
 	*/
 
-	
-	const query = JSON.parse('{"filter":{"component.name":{"$regex":"n","$options":"i"}},"sort":{},"skip":0,"limit":10}');
+	interopDB.getSupportedMongoCollections('3.1.0', (collections) => {
+		console.log(JSON.stringify(collections));
+	});
+
+	/*const query = JSON.parse('{"filter":{"component.name":{"$regex":"nvmesh-client","$options":"i"}},"sort":{},"skip":0,"limit":10}');
 	interopDB.getAllReleases(query, (results) => {
 		if (results)
 			if (results.error)
