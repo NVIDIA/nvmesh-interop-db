@@ -40,7 +40,7 @@ exports.connect = async(path, cb) => {
 };
 
 exports.getSupportedKafkaTopics = async (component, version, cb) => {
-	const topics = await dbAPI.getSupportedKafkaTopics(component, version);
+	const topics = await dbAPI.getCompatibilities(component, componentTypes.KAFKA_TOPIC, version);
 
 	cb(topics);
 };
@@ -179,7 +179,7 @@ exports.printMsg = (msg) => {
 };
 
 exports.getSupportedMongoCollections = async(version, cb) => {
-	const collections = await dbAPI.getSupportedMongoCollections(version);
+	const collections = await dbAPI.getCompatibilities(components.MANAGEMENT, componentTypes.MONGO_COLLECTION, version);
 
 	cb(collections);
 };

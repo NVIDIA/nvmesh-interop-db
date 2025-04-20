@@ -23,45 +23,7 @@ let scope = {
 	getComponentByID: async(componentID) => {
 		return await Component(sequelize).findOne({ where: { name: componentID } });
 	},
-	getSupportedMongoCollections: async(version) => {
-		const componentCompatibility = ComponentCompatibility(sequelize);
-
-		const compatibilities = await componentCompatibility.findAll({
-			include: [{
-				model: ComponentVersion(sequelize),
-				as: tableAssociations.SOURCE_VERSION,
-				where: { version: version },
-				required: true,
-				include: {
-					model: Component(sequelize),
-					as: tableAssociations.COMPONENT,
-					where: { name: components.MANAGEMENT }
-				}
-			},
-			{
-				model: ComponentVersion(sequelize),
-				as: tableAssociations.DESTINATION_VERSION,
-				required: true,
-				include: {
-					model: Component(sequelize),
-					as: tableAssociations.COMPONENT,
-					required: true,
-					include: {
-						model: ComponentType(sequelize),
-						where: { name: componentTypes.MONGO_COLLECTION },
-						as: tableAssociations.COMPONENT_TYPE
-					}
-				}
-			}]
-		});
-
-		return compatibilities.reduce((acc, curr) => {
-			(acc[curr.destinationVersion.component.name] ??= []).push(curr.destinationVersion.version);
-
-			return acc;
-		}, {});
-	},
-	getSupportedKafkaTopics: async(component, version) => {
+	getCompatibilities: async(component, type, version) => {
 		const componentCompatibility = ComponentCompatibility(sequelize);
 
 		const compatibilities = await componentCompatibility.findAll({
@@ -86,7 +48,7 @@ let scope = {
 					required: true,
 					include: {
 						model: ComponentType(sequelize),
-						where: { name: componentTypes.KAFKA_TOPIC },
+						where: { name: type },
 						as: tableAssociations.COMPONENT_TYPE
 					}
 				}

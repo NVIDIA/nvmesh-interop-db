@@ -97,7 +97,7 @@ async function test() {
 	});
 /*
 
-
+*/
 	interopDB.getSupportedKafkaTopics('nvmesh-management', '3.1.0', (res) =>  {
 		console.log(JSON.stringify(res));
 	});
