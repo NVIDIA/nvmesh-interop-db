@@ -68,17 +68,17 @@ async function test() {
 		description: 'new description',
 		archTypeID: 2,
 		kernelID: 9,
-		ofedID: 16,
-		operatingSystemID: 1
-	}, (results) => {
+
 		console.log(results);
 	})
 
 	*/
 
+	/*
 	interopDB.getSupportedMongoCollections('3.1.0', (collections) => {
 		console.log(JSON.stringify(collections));
 	});
+	*/
 
 	/*const query = JSON.parse('{"filter":{"component.name":{"$regex":"nvmesh-client","$options":"i"}},"sort":{},"skip":0,"limit":10}');
 	interopDB.getAllReleases(query, (results) => {
@@ -96,8 +96,6 @@ async function test() {
 		console.log(results);
 	});
 /*
-
-*/
 	interopDB.getSupportedKafkaTopics('nvmesh-management', '3.1.0', (res) =>  {
 		console.log(JSON.stringify(res));
 	});
@@ -229,6 +227,11 @@ async function test() {
 	//interopDB.countReleases((results) => { console.log(results); });
 
 	//interopDB.countComponents((results) => { console.log(results); });
+
+	interopDB.getPossibleUpgrades('3.1.0', (results) => {
+		console.log(`ERROR: ${results.error}`);
+		console.log(`DATA: ${JSON.stringify(results.data)}`);
+	});
 }
 
 test();

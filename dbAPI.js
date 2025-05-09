@@ -1,6 +1,21 @@
 const { Op, Sequelize } = require('sequelize');
-const { Setup, DistributionType, ComponentVersion, ComponentType, ComponentCompatibility, Component, ComponentVersionSetup, Kernel, Ofed, OperatingSystem, ArchType } = require('./Models/Inititializer.js');
 const { tableAssociations, componentTypes, components } = require('./consts.js');
+const {
+	Setup,
+	DistributionType,
+	ComponentVersion,
+	ComponentType,
+	ComponentCompatibility,
+	Component,
+	ComponentVersionSetup,
+	Kernel,
+	Ofed,
+	OperatingSystem,
+	ArchType,
+	Upgrade,
+	UpgradeType,
+	Release
+} = require('./Models/Inititializer.js');
 
 let sequelize;
 
@@ -259,6 +274,17 @@ let scope = {
 		const count = await entity(sequelize).count();
 
 		return count;
+	},
+	getPossibleUpgrades: async(sourceVersion) => {
+		const results = await Upgrade(sequelize).findAll({
+			include: [
+				{ model: UpgradeType(sequelize), as: tableAssociations.UPGRADE_TYPE },
+				{ model: Release(sequelize), as: tableAssociations.RELEASE },
+				{ model: ComponentVersion(sequelize), as: tableAssociations.COMPONENT_VERSION, where: { version: sourceVersion } }
+			]
+		});
+
+		return results;
 	}
 };
 
@@ -320,8 +346,8 @@ function warpWithTryCatch(fn) {
 
 	return async (...args) => {
 		try {
-			response.error = '';
 			response.data = await fn(...args);
+			response.error = null;
 		} catch (error) {
 			response.error = error;
 		} finally {

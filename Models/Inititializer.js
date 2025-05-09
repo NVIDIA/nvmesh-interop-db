@@ -11,7 +11,9 @@ const { DistributionType } = require('./DistributionType');
 const { Kernel } = require('./Kernel.js');
 const { Ofed } = require('./Ofed.js');
 const { OperatingSystem } = require('./OperatingSystem.js');
-
+const { Upgrade } = require('./Upgrade.js');
+const { UpgradeType } = require('./UpgradeType.js');
+const { Release } = require('./Release.js');
 exports.ArchType = (sequelize) => {
 	return ArchType(sequelize);
 };
@@ -179,4 +181,41 @@ exports.Setup = (sequelize) => {
 	});
 
 	return setup;
+};
+
+exports.Upgrade = (sequelize) => {
+	const upgrade = Upgrade(sequelize);
+
+	upgrade.belongsTo(UpgradeType(sequelize), {
+		foreignKey: {
+			allowNull: false
+		},
+		as: tableAssociations.UPGRADE_TYPE
+	});
+
+	upgrade.belongsTo(Release(sequelize), {
+		foreignKey: {
+			allowNull: false
+		},
+		as: tableAssociations.RELEASE,
+		foreignKey: 'destinationReleaseID'
+	});
+
+	upgrade.belongsTo(ComponentVersion(sequelize), {
+		foreignKey: {
+			allowNull: false
+		},
+		as: tableAssociations.COMPONENT_VERSION,
+		foreignKey: 'sourceVersionID'
+	});
+
+	return upgrade;
+};
+
+exports.UpgradeType = (sequelize) => {
+	return UpgradeType(sequelize);
+};
+
+exports.Release = (sequelize) => {
+	return Release(sequelize);
 };

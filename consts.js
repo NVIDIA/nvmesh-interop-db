@@ -10,7 +10,10 @@ exports.tableNames = {
 	OFED: 'Ofed',
 	OPERATING_SYSTEM: 'OperatingSystem',
 	SETUP: 'Setup',
-	COMPONENT_VERSION_SETUP: 'ComponentVersionSetup'
+	COMPONENT_VERSION_SETUP: 'ComponentVersionSetup',
+	UPGRADE_TYPE: 'UpgradeType',
+	UPGRADE: 'Upgrade',
+	RELEASE: 'Release'
 }
 
 exports.tableAssociations = {
@@ -25,7 +28,10 @@ exports.tableAssociations = {
 	KERNEL: 'kernel',
 	OFED: 'ofed',
 	SETUP: 'setup',
-	COMPONENT_VERSION_SETUP: 'ComponentVersionSetup'
+	COMPONENT_VERSION_SETUP: 'ComponentVersionSetup',
+	UPGRADE_TYPE: 'upgradeType',
+	UPGRADE: 'upgrade',
+	RELEASE: 'release'
 }
 
 exports.components = {
