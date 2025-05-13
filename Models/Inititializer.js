@@ -14,6 +14,11 @@ const { OperatingSystem } = require('./OperatingSystem.js');
 const { Upgrade } = require('./Upgrade.js');
 const { UpgradeType } = require('./UpgradeType.js');
 const { Release } = require('./Release.js');
+const { UpgradeStep } = require('./UpgradeStep.js');
+const { UpgradeToUpgradeStep } = require('./UpgradeToUpgradeStep.js');
+const { Artifact } = require('./Artifact.js');
+const { ReleaseArtifact } = require('./ReleaseArtifact.js');
+
 exports.ArchType = (sequelize) => {
 	return ArchType(sequelize);
 };
@@ -183,6 +188,10 @@ exports.Setup = (sequelize) => {
 	return setup;
 };
 
+exports.UpgradeStep = (sequelize) => {
+	return UpgradeStep(sequelize);
+};
+
 exports.Upgrade = (sequelize) => {
 	const upgrade = Upgrade(sequelize);
 
@@ -209,6 +218,15 @@ exports.Upgrade = (sequelize) => {
 		foreignKey: 'sourceVersionID'
 	});
 
+	upgrade.belongsToMany(UpgradeStep(sequelize), {
+		through: {
+			model: UpgradeToUpgradeStep(sequelize),
+		},
+		foreignKey: 'upgradeID',
+		otherKey: 'upgradeStepID',
+		as: 'steps'
+	});
+
 	return upgrade;
 };
 
@@ -217,5 +235,40 @@ exports.UpgradeType = (sequelize) => {
 };
 
 exports.Release = (sequelize) => {
-	return Release(sequelize);
+	const release = Release(sequelize);
+
+	release.belongsToMany(Artifact(sequelize), {
+		through: {
+			model: ReleaseArtifact(sequelize),
+		},
+		foreignKey: 'releaseID',
+		otherKey: 'artifactID',
+		as: 'artifacts'
+	});
+
+	return release;
+};
+
+exports.ReleaseArtifact = (sequelize) => {
+	return ReleaseArtifact(sequelize);
+};
+
+exports.Artifact = (sequelize) => {
+	const artifact = Artifact(sequelize);
+
+	artifact.belongsTo(OperatingSystem(sequelize), {
+		foreignKey: {
+			allowNull: false
+		},
+		as: tableAssociations.OPERATING_SYSTEM
+	});
+
+	artifact.belongsTo(ArchType(sequelize), {
+		foreignKey: {
+			allowNull: false
+		},
+		as: tableAssociations.ARCH_TYPE
+	});
+
+	return artifact;
 };

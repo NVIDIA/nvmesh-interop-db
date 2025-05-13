@@ -228,7 +228,19 @@ async function test() {
 
 	//interopDB.countComponents((results) => { console.log(results); });
 
+	/*
 	interopDB.getPossibleUpgrades('3.1.0', (results) => {
+		console.log(`ERROR: ${results.error}`);
+		console.log(`DATA: ${JSON.stringify(results.data)}`);
+	});
+	*/
+
+	/*interopDB.getUpgradeScenario('nvmesh-client', '3.1.0', '3.2.0-HF2', (results) => {
+		console.log(`ERROR: ${results.error}`);
+		console.log(`DATA: ${JSON.stringify(results.data)}`);
+	});*/
+
+	interopDB.getReleaseArtificatsForMachine('3.2.0-HF2', 'ROCKY_LINUX', '8.7', 'x86_64', (results) => {
 		console.log(`ERROR: ${results.error}`);
 		console.log(`DATA: ${JSON.stringify(results.data)}`);
 	});

@@ -13,8 +13,12 @@ exports.tableNames = {
 	COMPONENT_VERSION_SETUP: 'ComponentVersionSetup',
 	UPGRADE_TYPE: 'UpgradeType',
 	UPGRADE: 'Upgrade',
-	RELEASE: 'Release'
-}
+	RELEASE: 'Release',
+	UPGRADE_STEP: 'UpgradeStep',
+	UPGRADE_TO_UPGRADE_STEP: 'UpgradeToUpgradeStep',
+	ARTIFACT: 'Artifact',
+	RELEASE_ARTIFACT: 'ReleaseArtifact'
+};
 
 exports.tableAssociations = {
 	COMPONENT_TYPE: 'componentType',
@@ -31,15 +35,20 @@ exports.tableAssociations = {
 	COMPONENT_VERSION_SETUP: 'ComponentVersionSetup',
 	UPGRADE_TYPE: 'upgradeType',
 	UPGRADE: 'upgrade',
-	RELEASE: 'release'
-}
+	RELEASE: 'release',
+	UPGRADE_STEP: 'upgradeStep',
+	UPGRADE_TO_UPGRADE_STEP: 'upgradeToUpgradeStep',
+	ARTIFACT: 'artifact',
+	RELEASE_ARTIFACT: 'releaseArtifact'
+};
 
 exports.components = {
-	MANAGEMENT: 'nvmesh-management'
-
-}
+	MANAGEMENT: 'nvmesh-management',
+	CLIENT: 'nvmesh-client',
+	TARGET: 'nvmesh-target'
+};
 
 exports.componentTypes = {
 	KAFKA_TOPIC: 'KAFKA_TOPIC',
 	MONGO_COLLECTION: 'MONGODB_COLLECTION'
-}
+};

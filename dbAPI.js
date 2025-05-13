@@ -14,7 +14,9 @@ const {
 	ArchType,
 	Upgrade,
 	UpgradeType,
-	Release
+	Release,
+	UpgradeStep,
+	Artifact
 } = require('./Models/Inititializer.js');
 
 let sequelize;
@@ -282,6 +284,36 @@ let scope = {
 				{ model: Release(sequelize), as: tableAssociations.RELEASE },
 				{ model: ComponentVersion(sequelize), as: tableAssociations.COMPONENT_VERSION, where: { version: sourceVersion } }
 			]
+		});
+
+		return results.map((r) => r.dataValues);
+	},
+	getUpgradeScenario: async(component, sourceVersion, destinantionRelease) => {
+		const results = await Upgrade(sequelize).findAll({
+			include: [
+				{ model: Release(sequelize), as: tableAssociations.RELEASE, where: { version: destinantionRelease } },
+				{ model: ComponentVersion(sequelize), as: tableAssociations.COMPONENT_VERSION, where: { version: sourceVersion }, include: [
+					{ model: Component(sequelize), as: tableAssociations.COMPONENT, where: { name: component } }
+				] },
+				{ model: UpgradeStep(sequelize), as: 'steps' }
+			]
+		});
+
+		return results;
+	},
+	getReleaseArtificatsForMachine: async(release, osType, osVersion, architecture) => {
+		const results = await Release(sequelize).findAll({
+			include: [{
+					model: Artifact(sequelize), as: 'artifacts',
+					include: [
+						{ model: OperatingSystem(sequelize), as: tableAssociations.OPERATING_SYSTEM, where: { version: osVersion }, include: [
+							{ model: DistributionType(sequelize), as: tableAssociations.DISTRIBUTION_TYPE, where: { name: osType } }
+						] },
+						{ model: ArchType(sequelize), as: tableAssociations.ARCH_TYPE, where: { name: architecture } }
+					]
+				}
+			],
+			where: { version: release }
 		});
 
 		return results;

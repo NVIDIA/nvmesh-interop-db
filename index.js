@@ -189,3 +189,15 @@ exports.getPossibleUpgrades = async(sourceVersion, cb) => {
 
 	cb(results);
 };
+
+exports.getUpgradeScenario = async(component, sourceVersion, destinantionRelease, cb) => {
+	const results = await dbAPI.getUpgradeScenario(component, sourceVersion, destinantionRelease);
+
+	cb(results.data.length ? results.data[0] : results);
+};
+
+exports.getReleaseArtificatsForMachine = async(release, osType, osVersion, architecture, cb) => {
+	const results = await dbAPI.getReleaseArtificatsForMachine(release, osType, osVersion, architecture);
+
+	cb(results.data.length ? results.data[0] : results);
+};
