@@ -29,7 +29,11 @@ exports.UpgradeStep = (sequelize) => {
 			isVolumeAffected: {
 				type: DataTypes.INTEGER,
 				allowNull: false,
-			}
+			},
+			arguments: {
+				type: DataTypes.STRING,
+				allowNull: true,
+			},
 		}, {
 			tableName: tableNames.UPGRADE_STEP,
 			timestamps: false
