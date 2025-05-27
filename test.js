@@ -26,43 +26,46 @@ async function test() {
 	interopDB.getAllOperatingSystems((operatingSystems) => {
 		console.log(JSON.stringify(operatingSystems));
 	});
-	interopDB.getAllSetups({
+	interopDB.getAllPlatforms({
 		sort: { 'ofed.version': '5.4-3.5.8.0' },
 		filter: { 'description': { $regex: 'd', $option: 'i' } },
 		skip: 0,
 		limit: 10
-	}, (setups) => {
-			if (setups.error)
-				return console.log('ERROR: ', setups.error);
+	}, (platforms) => {
+			if (platforms.error)
+				return console.log('ERROR: ', platforms.error);
 
-			for (let setup of setups.data) {
-				console.log(JSON.stringify(setup));
+			for (let platform of platforms.data) {
+				console.log(JSON.stringify(platform));
 			}
 		}
 	);
 
-	/*interopDB.deleteSetups([{ ID: '2' }, { ID: '3' }], (results) => {
+	/*
+
+	*/
+	interopDB.deletePlatforms([{ ID: '4' }], (results) => {
 		console.log(results);
-	});*/
+	});
 
 /*
 
-	await interopDB.createSetup({
+	await interopDB.createPlatform({
 		name: 'Create test',
 		description: 'new description',
 		archTypeID: 2,
 		kernelID: 8,
 		ofedID: 4,
 		operatingSystemID: 1
-	}, (setup) => {
-		console.log('created', setup);
+	}, (platform) => {
+		console.log('created', platform);
 	});
 
-	interopDB.deleteSetupById(6, (results) => {
+	interopDB.deletePlatformById(6, (results) => {
 		console.log(results);
 	});
 
-	interopDB.updateSetup({
+	interopDB.updatePlatform({
 		ID: 2,
 		name: 'Create test',
 		description: 'new description',
@@ -95,14 +98,13 @@ async function test() {
 	interopDB.deleteReleases([{ ID: 6 }], (results) => {
 		console.log(results);
 	});
-/*
-	interopDB.getSupportedKafkaTopics('nvmesh-management', '3.1.0', (res) =>  {
+	interopDB.getSupportedKafkaTopics('managementFeatureCompatibility', '1', (res) =>  {
 		console.log(JSON.stringify(res));
 	});
-/*
-	interopDB.createRelease({
-		version: "1.0.0",
-		setups: [
+
+	interopDB.createComponentVersion({
+		version: "7.7.7",
+		platforms: [
 		],
 		requirements: [
 		],
@@ -119,9 +121,9 @@ async function test() {
 		"version":"7.0.16",
 		"componentId":7,
 		"component":{"id":7,"ID":7,"name":"mongoDB","componentTypeID":4,"componentType":{"ID":4,"name":"THIRD_PARTY"}},
-		"setups":[],
+		"platforms":[],
 		"requirements":[],
-		"compatibilities":[{"ID":7,"version":"14.21.3","componentId":8,"component":{"id":8,"ID":8,"name":"nodeJS","componentTypeID":4,"componentType":{"ID":4,"name":"THIRD_PARTY"}},"setups":[],"requirements":[],"compatibilities":[]}]
+		"compatibilities":[{"ID":7,"version":"14.21.3","componentId":8,"component":{"id":8,"ID":8,"name":"nodeJS","componentTypeID":4,"componentType":{"ID":4,"name":"THIRD_PARTY"}},"platforms":[],"requirements":[],"compatibilities":[]}]
 	}, (results) => {
 		console.log(results);
 	});
@@ -138,10 +140,10 @@ async function test() {
 				"componentType":{"ID":1,
 				"name":"NVMESH_PACKAGE"}
 			},
-			"setups":[{
+			"platforms":[{
 				"ID":1,
-				"name":"SetupName",
-				"description":"Setup description",
+				"name":"PlatformName",
+				"description":"Platform description",
 				"archTypeID":1,
 				"operatingSystemID":1,
 				"kernelID":8,
@@ -192,7 +194,7 @@ async function test() {
 	*/
 
 	/*
-	interopDB.getAllComponentSetups((results) => {
+	interopDB.getAllComponentPlatforms((results) => {
 		if (results)
 			if (results.error)
 				return console.log('ERROR: ', results.error);
@@ -240,10 +242,11 @@ async function test() {
 		console.log(`DATA: ${JSON.stringify(results.data)}`);
 	});*/
 
+	/*
 	interopDB.getReleaseArtificatsForMachine('3.2.0-HF2', 'ROCKY_LINUX', '8.7', 'x86_64', (results) => {
 		console.log(`ERROR: ${results.error}`);
 		console.log(`DATA: ${JSON.stringify(results.data)}`);
-	});
+	});*/
 }
 
 test();

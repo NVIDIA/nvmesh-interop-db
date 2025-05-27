@@ -4,7 +4,7 @@ const { DistributionType } = require('./Models/DistributionType.js');
 const { Ofed } = require('./Models/Ofed.js');
 const { OperatingSystem } = require('./Models/OperatingSystem.js');
 const { Kernel } = require('./Models/Kernel.js');
-const { Setup } = require('./Models/Setup.js');
+const { Platform } = require('./Models/Platform.js');
 const { ComponentType } = require('./Models/ComponentType.js');
 const { Component } = require('./Models/Component.js');
 const { ComponentVersion } = require('./Models/ComponentVersion.js');
@@ -87,67 +87,67 @@ exports.getComponentsByTypeID = async(componentTypeID, cb) => {
 	cb(entities);
 }
 
-exports.getAllSetups = async(queryObj, cb) => {
-	const setups = await dbAPI.getAllSetups(queryObj);
+exports.getAllPlatforms = async(queryObj, cb) => {
+	const platforms = await dbAPI.getAllPlatforms(queryObj);
 
-	cb(setups);
+	cb(platforms);
 };
 
-exports.createSetup = async(setup, cb) => {
-	const result = await dbAPI.createSetup(setup);
+exports.createPlatform = async(platform, cb) => {
+	const result = await dbAPI.createPlatform(platform);
 
 	cb(result);
 };
 
-exports.deleteSetups = async(setups, cb) => {
-	const results = await dbAPI.deleteSetups({ ID: { [Op.in]: setups.map((s) => s.ID) } });
+exports.deletePlatforms = async(platforms, cb) => {
+	const results = await dbAPI.deletePlatforms({ ID: { [Op.in]: platforms.map((p) => p.ID) } });
 
 	cb(results);
 };
 
-exports.deleteReleases = async(releases, cb) => {
-	const results = await dbAPI.deleteReleases({ ID: { [Op.in]: releases.map((r) => r.ID) } });
+exports.deleteComponentVersions = async(componentVersions, cb) => {
+	const results = await dbAPI.deleteComponentVersions({ ID: { [Op.in]: componentVersions.map((r) => r.ID) } });
 
 	cb(results);
 };
 
-exports.updateSetup = async(setup, cb) => {
-	const results = await dbAPI.updateSetup(setup);
+exports.updatePlatform = async(platform, cb) => {
+	const results = await dbAPI.updatePlatform(platform);
 
 	cb(results);
 };
 
-exports.getAllReleases = async(queryObj, cb) => {
+exports.getAllComponentVersions = async(queryObj, cb) => {
 	const results = await dbAPI.getAllComponentVersions(queryObj);
 
 	cb(results);
 };
 
-exports.createRelease = async(release, cb) => {
-	const result = await dbAPI.createRelease(release);
+exports.createComponentVersion = async(componentVersion, cb) => {
+	const result = await dbAPI.createComponentVersion(componentVersion);
 
 	cb(result);
 };
 
-exports.getAllComponentSetups = async(cb) => {
-	const results = await dbAPI.getAllComponentSetups();
+exports.getAllComponentPlatforms = async(cb) => {
+	const results = await dbAPI.getAllComponentPlatforms();
 
 	cb(results);
 };
 
-exports.updateRelease = async(release, cb) => {
-	const results = await dbAPI.updateRelease(release);
+exports.updateComponentVersion = async(componentVersion, cb) => {
+	const results = await dbAPI.updateComponentVersion(componentVersion);
 
 	cb(results);
 };
 
-exports.countSetups = async(cb) => {
-	const results = await dbAPI.countEntities(Setup);
+exports.countPlatforms = async(cb) => {
+	const results = await dbAPI.countEntities(Platform);
 
 	cb(results);
 };
 
-exports.countReleases = async(cb) => {
+exports.countComponentVersions = async(cb) => {
 	const results = await dbAPI.countEntities(ComponentVersion);
 
 	cb(results);
@@ -164,7 +164,7 @@ exports.logAllEntities = async () => {
 	try {
 		await printModel(Kernel);
 
-		let models = [Kernel, ArchType, Ofed, DistributionType, OperatingSystem, Setup, ComponentType, Component, ComponentVersion, ComponentCompatibility, ComponentRequirement];
+		let models = [Kernel, ArchType, Ofed, DistributionType, OperatingSystem, Platform, ComponentType, Component, ComponentVersion, ComponentCompatibility, ComponentRequirement];
 
 		await Promise.all(models.map(m => printModel(m)));
 	} catch (error) {

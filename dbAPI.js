@@ -1,13 +1,13 @@
 const { Op, Sequelize } = require('sequelize');
 const { tableAssociations, componentTypes, components } = require('./consts.js');
 const {
-	Setup,
+	Platform,
 	DistributionType,
 	ComponentVersion,
 	ComponentType,
 	ComponentCompatibility,
 	Component,
-	ComponentVersionSetup,
+	ComponentVersionPlatform,
 	Kernel,
 	Ofed,
 	OperatingSystem,
@@ -138,7 +138,7 @@ let scope = {
 			include: [{ model: Component(sequelize), where: { 'name': component }, as: tableAssociations.COMPONENT }]
 		});
 	},
-	getAllSetups: async(queryObj) => {
+	getAllPlatforms: async(queryObj) => {
 		let filtSortObj = parseQueryObj(queryObj);
 
 		let findObj = {
@@ -153,18 +153,18 @@ let scope = {
 			...filtSortObj
 		}
 
-		const setups = await Setup(sequelize).findAll(findObj);
+		const platforms = await Platform(sequelize).findAll(findObj);
 
-		return setups;
+		return platforms;
 	},
-	createSetup: async(setup) => {
-		return await Setup(sequelize).create(setup);
+	createPlatform: async(platform) => {
+		return await Platform(sequelize).create(platform);
 	},
-	deleteSetups: async(whereObj) => {
-		return await Setup(sequelize).destroy({ where: whereObj });
+	deletePlatforms: async(whereObj) => {
+		return await Platform(sequelize).destroy({ where: whereObj });
 	},
-	updateSetup: async(setup) => {
-		return await Setup(sequelize).update(setup, { where: { ID: setup.ID } });
+	updatePlatform: async(platform) => {
+		return await Platform(sequelize).update(platform, { where: { ID: platform.ID } });
 	},
 	getAllComponentVersions: async(queryObj) => {
 		let filtSortObj = parseQueryObj(queryObj);
@@ -178,8 +178,8 @@ let scope = {
 					{ model: ComponentType(sequelize), as: tableAssociations.COMPONENT_TYPE }
 				]
 			}, {
-				model: Setup(sequelize),
-				as: 'setups'
+				model: Platform(sequelize),
+				as: 'platforms'
 			}, {
 				model: Component(sequelize),
 				as: 'requirements'
@@ -197,7 +197,7 @@ let scope = {
 
 		return componentVersions;
 	},
-	getAllComponentSetups: async() => {
+	getAllComponentPlatforms: async() => {
 		let findObj = {
 			include: [{
 				model: ComponentVersion(sequelize),
@@ -206,31 +206,31 @@ let scope = {
 			}]
 		};
 
-		return await ComponentVersionSetup(sequelize).findAll(findObj);
+		return await ComponentVersionPlatform(sequelize).findAll(findObj);
 	},
-	updateRelease: async(release) => {
+	updateComponentVersion: async(cv) => {
 		const transaction = await sequelize.transaction();
 
 		try {
-			const componentVersion = await ComponentVersion(sequelize).findByPk(release.ID, {
-				model: Setup(sequelize),
-				as: 'setups'
+			const componentVersion = await ComponentVersion(sequelize).findByPk(cv.ID, {
+				model: Platform(sequelize),
+				as: 'platforms'
 			});
 
 			if (!componentVersion) {
 				throw new Error('ComponentVersion not found');
 			}
 
-			await componentVersion.update(release, { where: { ID: release.ID }, transaction });
+			await componentVersion.update(cv, { where: { ID: cv.ID }, transaction });
 
-			if (release.setups)
-				await componentVersion.setSetups(release.setups.map((s) => s.ID), { transaction });
+			if (cv.platforms)
+				await componentVersion.setPlatforms(cv.platforms.map((p) => p.ID), { transaction });
 
-			if (release.requirements)
-				await componentVersion.setRequirements(release.requirements.map((r) => r.ID), { transaction });
+			if (cv.requirements)
+				await componentVersion.setRequirements(cv.requirements.map((r) => r.ID), { transaction });
 
-			if (release.compatibilities)
-				await componentVersion.setCompatibilities(release.compatibilities.map((c) => c.ID), { transaction });
+			if (cv.compatibilities)
+				await componentVersion.setCompatibilities(cv.compatibilities.map((c) => c.ID), { transaction });
 
 			await transaction.commit();
 
@@ -241,20 +241,20 @@ let scope = {
 			return { success: false, error };
 		}
 	},
-	createRelease: async(release) => {
+	createComponentVersion: async(cv) => {
 		const transaction = await sequelize.transaction();
 
 		try {
-			const componentVersion = await ComponentVersion(sequelize).create(release, { transaction });
+			const componentVersion = await ComponentVersion(sequelize).create(cv, { transaction });
 
-			if (release.setups)
-				await componentVersion.setSetups(release.setups.map((s) => s.ID), { transaction });
+			if (cv.platforms)
+				await componentVersion.setPlatforms(cv.platforms.map((p) => p.ID), { transaction });
 
-			if (release.requirements)
-				await componentVersion.setRequirements(release.requirements.map((r) => r.ID), { transaction });
+			if (cv.requirements)
+				await componentVersion.setRequirements(cv.requirements.map((r) => r.ID), { transaction });
 
-			if (release.compatibilities)
-				await componentVersion.setCompatibilities(release.compatibilities.map((c) => c.ID), { transaction });
+			if (cv.compatibilities)
+				await componentVersion.setCompatibilities(cv.compatibilities.map((c) => c.ID), { transaction });
 
 			await transaction.commit();
 
@@ -269,7 +269,7 @@ let scope = {
 			throw (error);
 		}
 	},
-	deleteReleases: async(whereObj) => {
+	deleteComponentVersions: async(whereObj) => {
 		return await ComponentVersion(sequelize).destroy({ where: whereObj });
 	},
 	countEntities: async(entity) => {

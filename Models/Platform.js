@@ -1,9 +1,9 @@
 const { DataTypes } = require('sequelize');
 const { tableNames } = require('../consts.js');
 
-exports.Setup = (sequelize) => {
-	let setup = sequelize.define(
-		tableNames.SETUP, {
+exports.Platform = (sequelize) => {
+	let platform = sequelize.define(
+		tableNames.PLATFORM, {
 			ID: {
 				type: DataTypes.INTEGER,
 				allowNull: false,
@@ -18,10 +18,10 @@ exports.Setup = (sequelize) => {
 				type: DataTypes.TEXT
 			}
 		}, {
-			tableName: tableNames.SETUP,
+			tableName: tableNames.PLATFORM,
 			timestamps: false
 		}
 	);
 
-	return setup;
+	return platform;
 };

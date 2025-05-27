@@ -5,8 +5,8 @@ const { Component } = require('./Component.js');
 const { ArchType } = require('./ArchType.js');
 const { ComponentRequirement } = require('./ComponentRequirement.js');
 const { ComponentType } = require('./ComponentType.js');
-const { ComponentVersionSetup } = require('./ComponentVersionSetup.js');
-const { Setup } = require('./Setup.js');
+const { ComponentVersionPlatform } = require('./ComponentVersionPlatform.js');
+const { Platform } = require('./Platform.js');
 const { DistributionType } = require('./DistributionType');
 const { Kernel } = require('./Kernel.js');
 const { Ofed } = require('./Ofed.js');
@@ -95,13 +95,13 @@ exports.ComponentVersion = (sequelize) => {
 		foreignKey: 'componentID'
 	});
 
-	componentVersion.belongsToMany(Setup(sequelize), {
+	componentVersion.belongsToMany(Platform(sequelize), {
 		through: {
-			model: ComponentVersionSetup(sequelize),
+			model: ComponentVersionPlatform(sequelize),
 		},
 		foreignKey: 'componentVersionID',
-		otherKey: 'setupID',
-		as: 'setups'
+		otherKey: 'platformID',
+		as: 'platforms'
 	});
 
 	componentVersion.belongsToMany(Component(sequelize), {
@@ -125,8 +125,8 @@ exports.ComponentVersion = (sequelize) => {
 	return componentVersion;
 };
 
-exports.ComponentVersionSetup = (sequelize) => {
-	return ComponentVersionSetup(sequelize);
+exports.ComponentVersionPlatform = (sequelize) => {
+	return ComponentVersionPlatform(sequelize);
 };
 
 exports.DistributionType = (sequelize) => {
@@ -154,38 +154,38 @@ exports.OperatingSystem = (sequelize) => {
 	return operatingSystem;
 };
 
-exports.Setup = (sequelize) => {
-	const setup = Setup(sequelize);
+exports.Platform = (sequelize) => {
+	const platform = Platform(sequelize);
 
-	setup.belongsTo(ArchType(sequelize), {
+	platform.belongsTo(ArchType(sequelize), {
 		foreignKey: {
 			allowNull: false
 		},
 		as: tableAssociations.ARCH_TYPE
 	});
 
-	setup.belongsTo(OperatingSystem(sequelize), {
+	platform.belongsTo(OperatingSystem(sequelize), {
 		foreignKey: {
 			allowNull: false
 		},
 		as: tableAssociations.OPERATING_SYSTEM
 	});
 
-	setup.belongsTo(Kernel(sequelize), {
+	platform.belongsTo(Kernel(sequelize), {
 		foreignKey: {
 			allowNull: false
 		},
 		as: tableAssociations.KERNEL
 	});
 
-	setup.belongsTo(Ofed(sequelize), {
+	platform.belongsTo(Ofed(sequelize), {
 		foreignKey: {
 			allowNull: false
 		},
 		as: tableAssociations.OFED
 	});
 
-	return setup;
+	return platform;
 };
 
 exports.UpgradeStep = (sequelize) => {
