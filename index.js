@@ -196,8 +196,8 @@ exports.getUpgradeScenario = async(component, sourceVersion, destinantionRelease
 	cb(results.data.length ? results.data[0] : results);
 };
 
-exports.getReleaseArtificatsForMachine = async(release, osType, osVersion, architecture, cb) => {
-	const results = await dbAPI.getReleaseArtificatsForMachine(release, osType, osVersion, architecture);
+exports.getReleaseArtificatsForMachine = async(release, osType, osVersion, kernel, ofed, architecture, cb) => {
+	const results = await dbAPI.getReleaseArtificatsForMachine(release, osType, osVersion, kernel, ofed, architecture);
 
 	cb(results.data.length ? results.data[0] : results);
 };

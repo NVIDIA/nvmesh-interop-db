@@ -43,7 +43,6 @@ async function test() {
 
 	/*
 
-	*/
 	interopDB.deletePlatforms([{ ID: '4' }], (results) => {
 		console.log(results);
 	});
@@ -242,11 +241,10 @@ async function test() {
 		console.log(`DATA: ${JSON.stringify(results.data)}`);
 	});*/
 
-	/*
-	interopDB.getReleaseArtificatsForMachine('3.2.0-HF2', 'ROCKY_LINUX', '8.7', 'x86_64', (results) => {
+	interopDB.getReleaseArtificatsForMachine('3.2.0-HF2', 'ubuntu', '20.04', '5.15.0-102-generic', '5.4-3.5.8.0', 'x86_64', (results) => {
 		console.log(`ERROR: ${results.error}`);
-		console.log(`DATA: ${JSON.stringify(results.data)}`);
-	});*/
+		console.log(`DATA: ${JSON.stringify(results)}`);
+	});
 }
 
 test();

@@ -301,15 +301,19 @@ let scope = {
 
 		return results;
 	},
-	getReleaseArtificatsForMachine: async(release, osType, osVersion, architecture) => {
+	getReleaseArtificatsForMachine: async(release, osType, osVersion, kernel, ofed, architecture) => {
 		const results = await Release(sequelize).findAll({
 			include: [{
 					model: Artifact(sequelize), as: 'artifacts',
 					include: [
-						{ model: OperatingSystem(sequelize), as: tableAssociations.OPERATING_SYSTEM, where: { version: osVersion }, include: [
-							{ model: DistributionType(sequelize), as: tableAssociations.DISTRIBUTION_TYPE, where: { name: osType } }
+						{ model: Platform(sequelize), as: 'platforms', include: [
+							{ model: OperatingSystem(sequelize), as: tableAssociations.OPERATING_SYSTEM, where: { version: osVersion }, include: [
+								{ model: DistributionType(sequelize), as: tableAssociations.DISTRIBUTION_TYPE, where: { name: osType } }
+							]},
+							{ model: Kernel(sequelize), as: tableAssociations.KERNEL, where: { version: kernel } },
+							{ model: Ofed(sequelize), as: tableAssociations.OFED, where: { version: ofed } },
+							{ model: ArchType(sequelize), as: tableAssociations.ARCH_TYPE, where: { name: architecture } }
 						] },
-						{ model: ArchType(sequelize), as: tableAssociations.ARCH_TYPE, where: { name: architecture } }
 					]
 				}
 			],

@@ -17,7 +17,8 @@ exports.tableNames = {
 	UPGRADE_STEP: 'UpgradeStep',
 	UPGRADE_TO_UPGRADE_STEP: 'UpgradeToUpgradeStep',
 	ARTIFACT: 'Artifact',
-	RELEASE_ARTIFACT: 'ReleaseArtifact'
+	RELEASE_ARTIFACT: 'ReleaseArtifact',
+	ARTIFACT_PLATFORM: 'ArtifactPlatform'
 };
 
 exports.tableAssociations = {
@@ -39,7 +40,8 @@ exports.tableAssociations = {
 	UPGRADE_STEP: 'upgradeStep',
 	UPGRADE_TO_UPGRADE_STEP: 'upgradeToUpgradeStep',
 	ARTIFACT: 'artifact',
-	RELEASE_ARTIFACT: 'releaseArtifact'
+	RELEASE_ARTIFACT: 'releaseArtifact',
+	ARTIFACT_PLATFORM: 'artifactPlatform'
 };
 
 exports.components = {

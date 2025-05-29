@@ -18,7 +18,7 @@ const { UpgradeStep } = require('./UpgradeStep.js');
 const { UpgradeToUpgradeStep } = require('./UpgradeToUpgradeStep.js');
 const { Artifact } = require('./Artifact.js');
 const { ReleaseArtifact } = require('./ReleaseArtifact.js');
-
+const { ArtifactPlatform } = require('./ArtifactPlatform.js');
 exports.ArchType = (sequelize) => {
 	return ArchType(sequelize);
 };
@@ -253,21 +253,20 @@ exports.ReleaseArtifact = (sequelize) => {
 	return ReleaseArtifact(sequelize);
 };
 
+exports.ArtifactPlatform = (sequelize) => {
+	return ArtifactPlatform(sequelize);
+};
+
 exports.Artifact = (sequelize) => {
 	const artifact = Artifact(sequelize);
 
-	artifact.belongsTo(OperatingSystem(sequelize), {
-		foreignKey: {
-			allowNull: false
+	artifact.belongsToMany(Platform(sequelize), {
+		through: {
+			model: ArtifactPlatform(sequelize),
 		},
-		as: tableAssociations.OPERATING_SYSTEM
-	});
-
-	artifact.belongsTo(ArchType(sequelize), {
-		foreignKey: {
-			allowNull: false
-		},
-		as: tableAssociations.ARCH_TYPE
+		foreignKey: 'artifactID',
+		otherKey: 'platformID',
+		as: 'platforms'
 	});
 
 	return artifact;
