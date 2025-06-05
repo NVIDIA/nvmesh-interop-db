@@ -306,7 +306,7 @@ let scope = {
 			include: [{
 					model: Artifact(sequelize), as: 'artifacts',
 					include: [
-						{ model: Platform(sequelize), as: 'platforms', include: [
+						{ model: Platform(sequelize), as: 'platforms', required: true, include: [
 							{ model: OperatingSystem(sequelize), as: tableAssociations.OPERATING_SYSTEM, where: { version: osVersion }, include: [
 								{ model: DistributionType(sequelize), as: tableAssociations.DISTRIBUTION_TYPE, where: { name: osType } }
 							]},
