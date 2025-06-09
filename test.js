@@ -241,7 +241,12 @@ async function test() {
 		console.log(`DATA: ${JSON.stringify(results.data)}`);
 	});*/
 
-	interopDB.getReleaseArtificatsForMachine('3.2.0-QA', 'ubuntu', '24.04.2', '6.8.0-51-generic', 'Inbox', 'x86_64', (results) => {
+	interopDB.getReleaseArtificatsForMachine('3.2.0-QA', 'rocky', '8.6', '4.18.0-372.19.1.el8_6.x86_64', 'inbox', 'x86_64', (results) => {
+		console.log(`ERROR: ${results.error}`);
+		console.log(`DATA: ${JSON.stringify(results)}`);
+	});
+
+	interopDB.getCompatibilities('nvmesh-client', 'NVMESH_PACKAGE', '3.1.0', (results) => {
 		console.log(`ERROR: ${results.error}`);
 		console.log(`DATA: ${JSON.stringify(results)}`);
 	});

@@ -184,6 +184,12 @@ exports.getSupportedMongoCollections = async(version, cb) => {
 	cb(collections);
 };
 
+exports.getCompatibilities = async(component, type, version, cb) => {
+	const results = await dbAPI.getCompatibilities(component, type, version);
+
+	cb(results);
+};
+
 exports.getPossibleUpgrades = async(sourceVersion, cb) => {
 	const results = await dbAPI.getPossibleUpgrades(sourceVersion);
 
