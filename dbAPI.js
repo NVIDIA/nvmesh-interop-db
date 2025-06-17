@@ -83,24 +83,17 @@ let scope = {
 
 		return archTypes.map((a) => a.dataValues);
 	},
-	getAllOperatingSystems: async() => {
+	getAllOperatingSystems: async(queryObj) => {
+		let filtSortObj = parseQueryObj(queryObj);
+
 		const operatingSystems = await OperatingSystem(sequelize).findAll({
 			include: [{
 				model: DistributionType(sequelize), as: tableAssociations.DISTRIBUTION_TYPE
-			}]
+			}],
+			...filtSortObj
 		});
 
 		return operatingSystems.map((a) => { return { ID: a.ID, distributionType: a.distributionType.name, version: a.version } });
-	},
-	getAllKernels: async() => {
-		const kernels = await Kernel(sequelize).findAll({});
-
-		return kernels.map((kernel) => kernel.dataValues);
-	},
-	getAllOfeds: async() => {
-		const ofeds = await Ofed(sequelize).findAll({});
-
-		return ofeds.map((ofed) => ofed.dataValues);
 	},
 	getAllComponentTypes: async() => {
 		const componentTypes = await ComponentType(sequelize).findAll({});
@@ -276,6 +269,27 @@ let scope = {
 		const count = await entity(sequelize).count();
 
 		return count;
+	},
+	createEntity: async(entity, entityObj) => {
+		return await entity(sequelize).create(entityObj);
+	},
+	createOperatingSystem: async(operatingSystem) => {
+		const operatingSystems = await OperatingSystem(sequelize).create(operatingSystem, { include: [{ model: DistributionType(sequelize), as: tableAssociations.DISTRIBUTION_TYPE }] });
+
+		return operatingSystems.map((os) => os.dataValues);
+	},
+	deleteEntitiesByIDs: async(entity, ids) => {
+		return await entity(sequelize).destroy({ where: { ID: { [Op.in]: ids } } });
+	},
+	updateEntity: async(entity, entityObj) => {
+		return await entity(sequelize).update(entityObj, { where: { ID: entityObj.ID } });
+	},
+	getAllEntities: async(entity, queryObj) => {
+		let filtSortObj = parseQueryObj(queryObj);
+
+		const entities = await entity(sequelize).findAll(filtSortObj);
+
+		return entities.map((entity) => entity.dataValues);
 	},
 	getPossibleUpgrades: async(sourceVersion) => {
 		const results = await Upgrade(sequelize).findAll({

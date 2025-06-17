@@ -51,20 +51,20 @@ exports.getAllArchTypes = async(cb) => {
 	cb(entities);
 };
 
-exports.getAllOperatingSystems = async(cb) => {
-	const entities = await dbAPI.getAllOperatingSystems();
+exports.getAllOperatingSystems = async(queryObj, cb) => {
+	const entities = await dbAPI.getAllOperatingSystems(queryObj);
 
 	cb(entities);
 };
 
-exports.getAllKernels = async(cb) => {
-	const entities = await dbAPI.getAllKernels();
+exports.getAllKernels = async(queryObj, cb) => {
+	const entities = await dbAPI.getAllEntities(Kernel, queryObj);
 
 	cb(entities);
 };
 
-exports.getAllOfeds = async(cb) => {
-	const entities = await dbAPI.getAllOfeds();
+exports.getAllOfeds = async(queryObj, cb) => {
+	const entities = await dbAPI.getAllEntities(Ofed, queryObj);
 
 	cb(entities);
 };
@@ -155,6 +155,78 @@ exports.countComponentVersions = async(cb) => {
 
 exports.countComponents = async(cb) => {
 	const results = await dbAPI.countEntities(Component);
+
+	cb(results);
+};
+
+exports.countOfeds = async(cb) => {
+	const results = await dbAPI.countEntities(Ofed);
+
+	cb(results);
+};
+
+exports.createOfed = async(ofed, cb) => {
+	const result = await dbAPI.createEntity(Ofed, ofed);
+
+	cb(result);
+};
+
+exports.deleteOfeds = async(ofeds, cb) => {
+	const results = await dbAPI.deleteEntitiesByIDs(Ofed, ofeds.map((o) => o.ID));
+
+	cb(results);
+};
+
+exports.updateOfed = async(ofed, cb) => {
+	const results = await dbAPI.updateEntity(Ofed, ofed);
+
+	cb(results);
+};
+
+exports.countKernels = async(cb) => {
+	const results = await dbAPI.countEntities(Kernel);
+
+	cb(results);
+};
+
+exports.createKernel = async(kernel, cb) => {
+	const result = await dbAPI.createEntity(Kernel, kernel);
+
+	cb(result);
+};
+
+exports.deleteKernels = async(kernels, cb) => {
+	const results = await dbAPI.deleteEntitiesByIDs(Kernel, kernels.map((k) => k.ID));
+
+	cb(results);
+};
+
+exports.updateKernel = async(kernel, cb) => {
+	const results = await dbAPI.updateEntity(Kernel, kernel);
+
+	cb(results);
+};
+
+exports.countOperatingSystems = async(cb) => {
+	const results = await dbAPI.countEntities(OperatingSystem);
+
+	cb(results);
+};
+
+exports.createOperatingSystem = async(operatingSystem, cb) => {
+	const result = await dbAPI.createOperatingSystem(operatingSystem);
+
+	cb(result);
+};
+
+exports.deleteOperatingSystems = async(operatingSystems, cb) => {
+	const results = await dbAPI.deleteEntitiesByIDs(OperatingSystem, operatingSystems.map((o) => o.ID));
+
+	cb(results);
+};
+
+exports.updateOperatingSystem = async(operatingSystem, cb) => {
+	const results = await dbAPI.updateEntity(OperatingSystem, operatingSystem);
 
 	cb(results);
 };

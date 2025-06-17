@@ -14,18 +14,36 @@ async function test() {
 		console.log(JSON.stringify(archTypes));
 	});
 
-	interopDB.getAllOfeds((ofeds) => {
+	*/
+
+
+	/*interopDB.getAllOfeds({
+		sort: { version: -1 },
+		filter: { version: { $regex: 'inbox', $options: 'i' }},
+		skip: 0,
+		limit: 10
+	},(ofeds) => {
 		console.log(JSON.stringify(ofeds));
 	});
 
-	interopDB.getAllKernels((kernels) => {
+	interopDB.getAllKernels({
+		sort: { version: -1 },
+		filter: { },
+		skip: 0,
+		limit: 10
+	}, (kernels) => {
 		console.log(JSON.stringify(kernels));
 	});
 
-
-	interopDB.getAllOperatingSystems((operatingSystems) => {
+	interopDB.getAllOperatingSystems({
+		sort: { version: -1 },
+		filter: { },
+		skip: 0,
+		limit: 10
+	}, (operatingSystems) => {
 		console.log(JSON.stringify(operatingSystems));
 	});
+/*
 	interopDB.getAllPlatforms({
 		sort: { 'ofed.version': '5.4-3.5.8.0' },
 		filter: { 'description': { $regex: 'd', $option: 'i' } },
@@ -58,10 +76,6 @@ async function test() {
 		operatingSystemID: 1
 	}, (platform) => {
 		console.log('created', platform);
-	});
-
-	interopDB.deletePlatformById(6, (results) => {
-		console.log(results);
 	});
 
 	interopDB.updatePlatform({
@@ -241,6 +255,76 @@ async function test() {
 		console.log(`DATA: ${JSON.stringify(results.data)}`);
 	});*/
 
+	/*
+	interopDB.countOfeds((results) => {
+		console.log(results);
+	});
+
+	interopDB.createOfed({
+		version: '9.9.9'
+	}, (results) => {
+		console.log(results);
+	});
+
+	interopDB.deleteOfeds([{ ID: 10 }], (results) => {
+		console.log(results);
+	});
+/*
+	interopDB.updateOfed({
+		ID: 10,
+		version: '10.10.10'
+	}, (results) => {
+		console.log(results);
+	});
+	*/
+
+	/*
+	interopDB.countKernels((results) => {
+		console.log(results);
+	});
+
+	interopDB.createKernel({
+		version: '11.11.11'
+	}, (results) => {
+		console.log(results);
+	});
+
+	interopDB.deleteKernels([{ ID: 21 }], (results) => {
+		console.log(results);
+	});
+
+	interopDB.updateKernel({
+		ID: 11,
+		version: '11.11.12'
+	}, (results) => {
+		console.log(results);
+	});
+
+	*/
+	/*
+	interopDB.countOperatingSystems((results) => {
+		console.log(results);
+	});
+
+	interopDB.createOperatingSystem({
+		distributionTypeID: 2,
+		version: '12.12.12'
+	}, (results) => {
+		console.log(results);
+	});
+
+	interopDB.deleteOperatingSystems([{ ID: 7 }], (results) => {
+		console.log(results);
+	});
+
+	interopDB.updateOperatingSystem({
+		ID: 7,
+		version: '12.12.13'
+	}, (results) => {
+		console.log(results);
+	});*/
+
+	/*
 	interopDB.getReleaseArtificatsForMachine('3.2.0-QA', 'rocky', '8.6', '4.18.0-372.19.1.el8_6.x86_64', 'inbox', 'x86_64', (results) => {
 		console.log(`ERROR: ${results.error}`);
 		console.log(`DATA: ${JSON.stringify(results)}`);
@@ -250,6 +334,7 @@ async function test() {
 		console.log(`ERROR: ${results.error}`);
 		console.log(`DATA: ${JSON.stringify(results)}`);
 	});
+	*/
 }
 
 test();
