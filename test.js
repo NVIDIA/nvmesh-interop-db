@@ -346,7 +346,6 @@ async function test() {
 		console.log(JSON.stringify(artifacts));
 	});
 
-
 	interopDB.createArtifact({
 		name: 'test.rpm',
 		platforms: [
@@ -356,7 +355,7 @@ async function test() {
 	}, (artifact) => {
 		console.log(artifact);
 	});
-/*
+
 	interopDB.updateArtifact({
 		ID: 24,
 		name: 'test.rpm',
@@ -365,10 +364,15 @@ async function test() {
 		]
 	}, (artifact) => {
 		console.log(artifact);
-	});*/
-
+	});
 
 	interopDB.deleteArtifacts([{ ID: 24 }], (results) => {
+		console.log(results);
+	});
+
+	*/
+
+	interopDB.countArtifacts((results) => {
 		console.log(results);
 	});
 

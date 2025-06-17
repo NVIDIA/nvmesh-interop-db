@@ -78,6 +78,7 @@ let scope = {
 			return acc;
 		}, {});
 	},
+	//TODO:Get requirements by component version
 	getAllArchTypes: async() => {
 		const archTypes = await ArchType(sequelize).findAll({});
 

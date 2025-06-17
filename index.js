@@ -304,3 +304,9 @@ exports.updateArtifact = async(artifact, cb) => {
 
 	cb(results);
 };
+
+exports.countArtifacts = async(cb) => {
+	const results = await dbAPI.countEntities(Artifact);
+
+	cb(results);
+};
