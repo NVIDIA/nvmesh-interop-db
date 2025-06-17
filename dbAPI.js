@@ -401,7 +401,68 @@ let scope = {
 			await artifact.destroy();
 		}
 	},
+	getAllReleases: async(queryObj) => {
+		let filtSortObj = parseQueryObj(queryObj);
 
+		const releases = await Release(sequelize).findAll({
+				include: [{	model: Artifact(sequelize), as: 'artifacts'	}],
+				...filtSortObj
+			}
+		);
+
+		return releases.map((release) => release.dataValues);
+	},
+	createRelease: async(releaseToCreate) => {
+		const transaction = await sequelize.transaction();
+
+		try {
+			const release = await Release(sequelize).create(releaseToCreate, { transaction });
+
+			if (releaseToCreate.artifacts)
+				await release.setArtifacts(releaseToCreate.artifacts.map((a) => a.ID), { transaction });
+
+			await transaction.commit();
+
+			return release;
+		} catch (error) {
+			if (transaction.finished !== 'commit')
+				await transaction.rollback();
+
+			throw (error);
+		}
+	},
+	updateRelease: async(releaseToUpdate) => {
+		const transaction = await sequelize.transaction();
+
+		try {
+			const release = await Release(sequelize).findByPk(releaseToUpdate.ID);
+
+			if (!release) {
+				throw new Error('Release not found');
+			}
+
+			await release.update(releaseToUpdate, { where: { ID: releaseToUpdate.ID }, transaction });
+
+			if (releaseToUpdate.artifacts)
+				await release.setArtifacts(releaseToUpdate.artifacts.map((a) => a.ID), { transaction });
+
+			await transaction.commit();
+
+			return release;
+		} catch (error) {
+			if (transaction.finished !== 'commit')
+				await transaction.rollback();
+
+			throw (error);
+		}
+	},
+	deleteReleases: async(releases) => {
+		for (const r of releases) {
+			const release = await Release(sequelize).findByPk(r.ID);
+			await release.setArtifacts([]);
+			await release.destroy();
+		}
+	},
 };
 
 function parseQueryObj({sort, filter, skip, limit}) {

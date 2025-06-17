@@ -11,6 +11,7 @@ const { ComponentVersion } = require('./Models/ComponentVersion.js');
 const { ComponentCompatibility } = require('./Models/ComponentCompatibility.js');
 const { ComponentRequirement } = require('./Models/ComponentRequirement.js');
 const { Artifact } = require('./Models/Artifact.js');
+const { Release } = require('./Models/Release.js');
 const dbAPI = require('./dbAPI.js');
 const { components, tableAssociations, componentTypes } = require('./consts.js');
 
@@ -307,6 +308,36 @@ exports.updateArtifact = async(artifact, cb) => {
 
 exports.countArtifacts = async(cb) => {
 	const results = await dbAPI.countEntities(Artifact);
+
+	cb(results);
+};
+
+exports.countReleases = async(cb) => {
+	const results = await dbAPI.countEntities(Release);
+
+	cb(results);
+};
+
+exports.getAllReleases = async(queryObj, cb) => {
+	const results = await dbAPI.getAllReleases(queryObj);
+
+	cb(results);
+};
+
+exports.createRelease = async(release, cb) => {
+	const results = await dbAPI.createRelease(release);
+
+	cb(results);
+};
+
+exports.updateRelease = async(release, cb) => {
+	const results = await dbAPI.updateRelease(release);
+
+	cb(results);
+};
+
+exports.deleteReleases = async(releases, cb) => {
+	const results = await dbAPI.deleteReleases(releases);
 
 	cb(results);
 };

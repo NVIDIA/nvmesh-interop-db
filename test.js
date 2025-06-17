@@ -248,12 +248,11 @@ async function test() {
 		console.log(`ERROR: ${results.error}`);
 		console.log(`DATA: ${JSON.stringify(results.data)}`);
 	});
-	*/
 
-	/*interopDB.getUpgradeScenario('nvmesh-client', '3.1.0', '3.2.0-HF2', (results) => {
+	interopDB.getUpgradeScenario('nvmesh-client', '3.3.0', '3.3.0-QA', (results) => {
 		console.log(`ERROR: ${results.error}`);
 		console.log(`DATA: ${JSON.stringify(results.data)}`);
-	});*/
+	});
 
 	/*
 	interopDB.countOfeds((results) => {
@@ -372,10 +371,47 @@ async function test() {
 
 	*/
 
-	interopDB.countArtifacts((results) => {
+	/*interopDB.countArtifacts((results) => {
+		console.log(results);
+	});*/
+
+	/*
+	interopDB.countReleases((results) => {
 		console.log(results);
 	});
 
+	interopDB.getAllReleases({
+		sort: {},
+		filter: {},
+		skip: 0,
+		limit: 0
+	}, (releases) => {
+		console.log(JSON.stringify(releases));
+	});
+
+	interopDB.createRelease({
+		version: 'TEST',
+		artifacts: [
+			{ ID: 1 }
+		]
+	}, (release) => {
+		console.log(release);
+	});
+
+	interopDB.updateRelease({
+		ID: 6,
+		version: 'TEST2',
+		artifacts: [
+			{ ID: 2 }
+		]
+	}, (release) => {
+		console.log(release);
+	});
+
+	interopDB.deleteReleases([{ ID: 6 }], (results) => {
+		console.log(results);
+	});
+	*/
 }
 
 test();
