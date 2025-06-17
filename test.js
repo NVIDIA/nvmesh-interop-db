@@ -335,6 +335,43 @@ async function test() {
 		console.log(`DATA: ${JSON.stringify(results)}`);
 	});
 	*/
+
+	/*
+	interopDB.getAllArtifacts({
+		sort: {},
+		filter: {},
+		skip: 0,
+		limit: 0
+	}, (artifacts) => {
+		console.log(JSON.stringify(artifacts));
+	});
+
+
+	interopDB.createArtifact({
+		name: 'test.rpm',
+		platforms: [
+			{ ID: 8 },
+			{ ID: 1 }
+		]
+	}, (artifact) => {
+		console.log(artifact);
+	});
+/*
+	interopDB.updateArtifact({
+		ID: 24,
+		name: 'test.rpm',
+		platforms: [
+			{ ID: 8 }
+		]
+	}, (artifact) => {
+		console.log(artifact);
+	});*/
+
+
+	interopDB.deleteArtifacts([{ ID: 24 }], (results) => {
+		console.log(results);
+	});
+
 }
 
 test();

@@ -2,7 +2,7 @@ const { DataTypes } = require('sequelize');
 const { tableNames } = require('../consts.js');
 
 exports.ArtifactPlatform = (sequelize) => {
-	return sequelize.define(
+	const artifactPlatform = sequelize.define(
 		tableNames.ARTIFACT_PLATFORM, {
 			ID: {
 				type: DataTypes.INTEGER,
@@ -15,4 +15,6 @@ exports.ArtifactPlatform = (sequelize) => {
 			timestamps: false
 		}
 	);
+
+	return artifactPlatform;
 }

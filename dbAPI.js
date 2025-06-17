@@ -95,6 +95,16 @@ let scope = {
 
 		return operatingSystems.map((a) => { return { ID: a.ID, distributionType: a.distributionType.name, version: a.version } });
 	},
+	getAllArtifacts: async(queryObj) => {
+		let filtSortObj = parseQueryObj(queryObj);
+
+		const artifacts = await Artifact(sequelize).findAll({
+			include: [{	model: Platform(sequelize), as: 'platforms'	}],
+			...filtSortObj
+		});
+
+		return artifacts.map((a) => a.dataValues);
+	},
 	getAllComponentTypes: async() => {
 		const componentTypes = await ComponentType(sequelize).findAll({});
 
@@ -335,7 +345,62 @@ let scope = {
 		});
 
 		return results;
-	}
+	},
+	createArtifact: async(artifactToCreate) => {
+		const transaction = await sequelize.transaction();
+
+		try {
+			const artifact = await Artifact(sequelize).create(artifactToCreate, { transaction });
+
+			if (artifactToCreate.platforms)
+				await artifact.setPlatforms(artifactToCreate.platforms.map((p) => p.ID), { transaction });
+
+			await transaction.commit();
+
+			return artifact;
+		} catch (error) {
+			if (transaction.finished !== 'commit')
+				await transaction.rollback();
+
+			throw (error);
+		}
+	},
+	updateArtifact: async(artifactToUpdate) => {
+		const transaction = await sequelize.transaction();
+
+		try {
+			const artifact = await Artifact(sequelize).findByPk(artifactToUpdate.ID, {
+				model: Platform(sequelize),
+				as: 'platforms'
+			});
+
+			if (!artifact) {
+				throw new Error('Artifact not found');
+			}
+
+			await artifact.update(artifactToUpdate, { where: { ID: artifactToUpdate.ID }, transaction });
+
+			if (artifactToUpdate.platforms)
+				await artifact.setPlatforms(artifactToUpdate.platforms.map((p) => p.ID), { transaction });
+
+			await transaction.commit();
+
+			return artifact;
+		} catch (error) {
+			if (transaction.finished !== 'commit')
+				await transaction.rollback();
+
+			throw (error);
+		}
+	},
+	deleteArtifacts: async(artifacts) => {
+		for (const a of artifacts) {
+			const artifact = await Artifact(sequelize).findByPk(a.ID);
+			await artifact.setPlatforms([]);
+			await artifact.destroy();
+		}
+	},
+
 };
 
 function parseQueryObj({sort, filter, skip, limit}) {

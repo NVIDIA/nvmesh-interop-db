@@ -10,6 +10,7 @@ const { Component } = require('./Models/Component.js');
 const { ComponentVersion } = require('./Models/ComponentVersion.js');
 const { ComponentCompatibility } = require('./Models/ComponentCompatibility.js');
 const { ComponentRequirement } = require('./Models/ComponentRequirement.js');
+const { Artifact } = require('./Models/Artifact.js');
 const dbAPI = require('./dbAPI.js');
 const { components, tableAssociations, componentTypes } = require('./consts.js');
 
@@ -231,6 +232,12 @@ exports.updateOperatingSystem = async(operatingSystem, cb) => {
 	cb(results);
 };
 
+exports.getAllArtifacts = async(queryObj, cb) => {
+	const results = await dbAPI.getAllArtifacts(queryObj);
+
+	cb(results);
+};
+
 //DEBUG
 exports.logAllEntities = async () => {
 	try {
@@ -278,4 +285,22 @@ exports.getReleaseArtificatsForMachine = async(release, osType, osVersion, kerne
 	const results = await dbAPI.getReleaseArtificatsForMachine(release, osType, osVersion, kernel, ofed, architecture);
 
 	cb(results.data.length ? results.data[0] : results);
+};
+
+exports.createArtifact = async(artifact, cb) => {
+	const result = await dbAPI.createArtifact(artifact);
+
+	cb(result);
+};
+
+exports.deleteArtifacts = async(artifacts, cb) => {
+	const results = await dbAPI.deleteArtifacts(artifacts);
+
+	cb(results);
+};
+
+exports.updateArtifact = async(artifact, cb) => {
+	const results = await dbAPI.updateArtifact(artifact);
+
+	cb(results);
 };
