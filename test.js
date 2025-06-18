@@ -412,6 +412,10 @@ async function test() {
 		console.log(results);
 	});
 	*/
+
+	interopDB.getRequirements('nvmesh-client', '3.1.0', (results) => {
+		console.log(results.data);
+	});
 }
 
 test();

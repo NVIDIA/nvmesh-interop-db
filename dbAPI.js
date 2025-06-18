@@ -16,7 +16,8 @@ const {
 	UpgradeType,
 	Release,
 	UpgradeStep,
-	Artifact
+	Artifact,
+	ComponentRequirement
 } = require('./Models/Inititializer.js');
 
 let sequelize;
@@ -78,7 +79,27 @@ let scope = {
 			return acc;
 		}, {});
 	},
-	//TODO:Get requirements by component version
+	getRequirements: async(component, version) => {
+		const requirements = await ComponentRequirement(sequelize).findAll({
+			include: [{
+				model: ComponentVersion(sequelize),
+				as: tableAssociations.COMPONENT_VERSION,
+				where: { version: version },
+				required: true,
+				include: {
+					model: Component(sequelize),
+					as: tableAssociations.COMPONENT,
+					where: { name: component }
+				}
+			}, {
+				model: Component(sequelize),
+				as: tableAssociations.COMPONENT,
+				required: true
+			}]
+		});
+
+		return requirements.map((r) => r.component.name);
+	},
 	getAllArchTypes: async() => {
 		const archTypes = await ArchType(sequelize).findAll({});
 

@@ -270,6 +270,12 @@ exports.getCompatibilities = async(component, type, version, cb) => {
 	cb(results);
 };
 
+exports.getRequirements = async(component, version, cb) => {
+	const results = await dbAPI.getRequirements(component, version);
+
+	cb(results);
+};
+
 exports.getPossibleUpgrades = async(sourceVersion, cb) => {
 	const results = await dbAPI.getPossibleUpgrades(sourceVersion);
 

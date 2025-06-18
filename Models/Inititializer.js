@@ -69,7 +69,7 @@ exports.ComponentRequirement = (sequelize) => {
 		foreignKey: 'componentVersionID'
 	});
 
-	componentRequirement.belongsTo(ComponentVersion(sequelize), {
+	componentRequirement.belongsTo(Component(sequelize), {
 		foreignKey: {
 			allowNull: false
 		},
