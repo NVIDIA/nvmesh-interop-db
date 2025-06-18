@@ -132,6 +132,18 @@ let scope = {
 
 		return  componentTypes.map((componentType) => componentType.dataValues);
 	},
+	countComponents: async(filterObj = {}) => {
+		const countFilterObj = parseQueryObj({ filter: filterObj });
+
+		const count = await Component(sequelize).count({
+			include: [{
+				model: ComponentType(sequelize), as: tableAssociations.COMPONENT_TYPE
+			}],
+			...countFilterObj
+		});
+
+		return count;
+	},
 	getAllComponents: async(queryObj, eagerLoading) => {
 		const filtSortObj = parseQueryObj(queryObj);
 
@@ -190,6 +202,20 @@ let scope = {
 	},
 	updatePlatform: async(platform) => {
 		return await Platform(sequelize).update(platform, { where: { ID: platform.ID } });
+	},
+	countComponentVersions: async(filterObj = {}) => {
+		const countFilterObj = parseQueryObj({ filter: filterObj });
+
+		const count = await ComponentVersion(sequelize).count({
+			include: [{
+				model: Component(sequelize), as: tableAssociations.COMPONENT , include: [
+					{ model: ComponentType(sequelize), as: tableAssociations.COMPONENT_TYPE }
+				],
+				...countFilterObj
+			}]
+		});
+
+		return count;
 	},
 	getAllComponentVersions: async(queryObj) => {
 		let filtSortObj = parseQueryObj(queryObj);
@@ -297,8 +323,37 @@ let scope = {
 	deleteComponentVersions: async(whereObj) => {
 		return await ComponentVersion(sequelize).destroy({ where: whereObj });
 	},
-	countEntities: async(entity) => {
-		const count = await entity(sequelize).count();
+	countEntities: async(entity, filterObj = {}) => {
+		const count = await entity(sequelize).count(parseQueryObj({ filter: filterObj }));
+
+		return count;
+	},
+	countPlatforms: async(filterObj = {}) => {
+		const countFilterObj = parseQueryObj({ filter: filterObj });
+
+		const count = await Platform(sequelize).count({
+			include: [
+				{ model: ArchType(sequelize), as: tableAssociations.ARCH_TYPE },
+				{ model: OperatingSystem(sequelize), as: tableAssociations.OPERATING_SYSTEM, include: [
+					{ model: DistributionType(sequelize), as: tableAssociations.DISTRIBUTION_TYPE }
+				] },
+				{ model: Kernel(sequelize), as: tableAssociations.KERNEL },
+				{ model: Ofed(sequelize), as: tableAssociations.OFED }
+			],
+			...countFilterObj
+		});
+
+		return count;
+	},
+	countOperatingSystems: async(filterObj = {}) => {
+		const countFilterObj = parseQueryObj({ filter: filterObj });
+
+		const count = await OperatingSystem(sequelize).count({
+			include: [{
+				model: DistributionType(sequelize), as: tableAssociations.DISTRIBUTION_TYPE
+			}],
+			...countFilterObj
+		});
 
 		return count;
 	},

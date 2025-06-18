@@ -143,26 +143,26 @@ exports.updateComponentVersion = async(componentVersion, cb) => {
 	cb(results);
 };
 
-exports.countPlatforms = async(cb) => {
-	const results = await dbAPI.countEntities(Platform);
+exports.countPlatforms = async(queryObj, cb) => {
+	const results = await dbAPI.countPlatforms(queryObj);
 
 	cb(results);
 };
 
-exports.countComponentVersions = async(cb) => {
-	const results = await dbAPI.countEntities(ComponentVersion);
+exports.countComponentVersions = async(queryObj, cb) => {
+	const results = await dbAPI.countComponentVersions(queryObj);
 
 	cb(results);
 };
 
-exports.countComponents = async(cb) => {
-	const results = await dbAPI.countEntities(Component);
+exports.countComponents = async(queryObj, cb) => {
+	const results = await dbAPI.countComponents(queryObj);
 
 	cb(results);
 };
 
-exports.countOfeds = async(cb) => {
-	const results = await dbAPI.countEntities(Ofed);
+exports.countOfeds = async(queryObj, cb) => {
+	const results = await dbAPI.countEntities(Ofed, queryObj);
 
 	cb(results);
 };
@@ -185,8 +185,8 @@ exports.updateOfed = async(ofed, cb) => {
 	cb(results);
 };
 
-exports.countKernels = async(cb) => {
-	const results = await dbAPI.countEntities(Kernel);
+exports.countKernels = async(queryObj, cb) => {
+	const results = await dbAPI.countEntities(Kernel, queryObj);
 
 	cb(results);
 };
@@ -209,8 +209,8 @@ exports.updateKernel = async(kernel, cb) => {
 	cb(results);
 };
 
-exports.countOperatingSystems = async(cb) => {
-	const results = await dbAPI.countEntities(OperatingSystem);
+exports.countOperatingSystems = async(queryObj, cb) => {
+	const results = await dbAPI.countOperatingSystems(queryObj);
 
 	cb(results);
 };
@@ -312,14 +312,14 @@ exports.updateArtifact = async(artifact, cb) => {
 	cb(results);
 };
 
-exports.countArtifacts = async(cb) => {
-	const results = await dbAPI.countEntities(Artifact);
+exports.countArtifacts = async(queryObj, cb) => {
+	const results = await dbAPI.countEntities(Artifact, queryObj);
 
 	cb(results);
 };
 
-exports.countReleases = async(cb) => {
-	const results = await dbAPI.countEntities(Release);
+exports.countReleases = async(queryObj, cb) => {
+	const results = await dbAPI.countEntities(Release, queryObj);
 
 	cb(results);
 };

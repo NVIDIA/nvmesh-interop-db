@@ -239,9 +239,36 @@ async function test() {
 	});
 	*/
 
-	//interopDB.countReleases((results) => { console.log(results); });
+	/*
+	interopDB.countReleases({}, (results) => { console.log(results); });
 
-	//interopDB.countComponents((results) => { console.log(results); });
+	interopDB.countComponents({}, (results) => { console.log(re
+
+	interopDB.countComponentVersions({}, (results) => { console.log(results); });
+
+	interopDB.countOfeds({}, (results) => {
+		console.log(results);
+	});
+
+	interopDB.countKernels({}, (results) => {
+		console.log(results);
+	});
+
+	interopDB.countOperatingSystems({}, (results) => {
+		console.log(results);
+	});/*
+
+	interopDB.countArtifacts({}, (results) => {
+		console.log(results);
+	});
+
+	interopDB.countReleases({}, (results) => {
+		console.log(results);
+	});
+
+	/*interopDB.countPlatforms({"archType.name":{"$regex":"2","$options":"i"}}, (results) => {
+		console.log(results);
+	});
 
 	/*
 	interopDB.getPossibleUpgrades('3.1.0', (results) => {
@@ -255,10 +282,6 @@ async function test() {
 	});
 
 	/*
-	interopDB.countOfeds((results) => {
-		console.log(results);
-	});
-
 	interopDB.createOfed({
 		version: '9.9.9'
 	}, (results) => {
@@ -278,10 +301,6 @@ async function test() {
 	*/
 
 	/*
-	interopDB.countKernels((results) => {
-		console.log(results);
-	});
-
 	interopDB.createKernel({
 		version: '11.11.11'
 	}, (results) => {
@@ -299,12 +318,7 @@ async function test() {
 		console.log(results);
 	});
 
-	*/
 	/*
-	interopDB.countOperatingSystems((results) => {
-		console.log(results);
-	});
-
 	interopDB.createOperatingSystem({
 		distributionTypeID: 2,
 		version: '12.12.12'
@@ -321,7 +335,7 @@ async function test() {
 		version: '12.12.13'
 	}, (results) => {
 		console.log(results);
-	});*/
+	});
 
 	/*
 	interopDB.getReleaseArtificatsForMachine('3.2.0-QA', 'rocky', '8.6', '4.18.0-372.19.1.el8_6.x86_64', 'inbox', 'x86_64', (results) => {
@@ -369,17 +383,6 @@ async function test() {
 		console.log(results);
 	});
 
-	*/
-
-	/*interopDB.countArtifacts((results) => {
-		console.log(results);
-	});*/
-
-	/*
-	interopDB.countReleases((results) => {
-		console.log(results);
-	});
-
 	interopDB.getAllReleases({
 		sort: {},
 		filter: {},
@@ -411,11 +414,11 @@ async function test() {
 	interopDB.deleteReleases([{ ID: 6 }], (results) => {
 		console.log(results);
 	});
-	*/
 
 	interopDB.getRequirements('nvmesh-client', '3.1.0', (results) => {
 		console.log(results.data);
 	});
+	*/
 }
 
 test();
