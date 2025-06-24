@@ -318,13 +318,14 @@ async function test() {
 		console.log(results);
 	});
 
-	/*
+	*/
 	interopDB.createOperatingSystem({
 		distributionTypeID: 2,
 		version: '12.12.12'
 	}, (results) => {
 		console.log(results);
 	});
+/*
 
 	interopDB.deleteOperatingSystems([{ ID: 7 }], (results) => {
 		console.log(results);

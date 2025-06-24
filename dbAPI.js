@@ -361,9 +361,7 @@ let scope = {
 		return await entity(sequelize).create(entityObj);
 	},
 	createOperatingSystem: async(operatingSystem) => {
-		const operatingSystems = await OperatingSystem(sequelize).create(operatingSystem, { include: [{ model: DistributionType(sequelize), as: tableAssociations.DISTRIBUTION_TYPE }] });
-
-		return operatingSystems.map((os) => os.dataValues);
+		return await OperatingSystem(sequelize).create(operatingSystem, { include: [{ model: DistributionType(sequelize), as: tableAssociations.DISTRIBUTION_TYPE }] });
 	},
 	deleteEntitiesByIDs: async(entity, ids) => {
 		return await entity(sequelize).destroy({ where: { ID: { [Op.in]: ids } } });
