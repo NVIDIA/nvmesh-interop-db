@@ -576,9 +576,13 @@ function convertFilterToWhere(filter) {
 	let value;
 
 	for (let key in filter) {
-		value = isObject(filter[key]) && '$regex' in filter[key]
-			? { [Op.like]: `%${filter[key]['$regex']}%` }
-			: filter[key]
+		if (isObject(filter[key])) {
+			if ('$regex' in filter[key])
+				value = { [Op.like]: `%${filter[key]['$regex']}%` };
+			else if ('$in' in filter[key])
+				value = filter[key]['$in'];
+		} else
+			value = filter[key];
 
 		where[key.includes('.') ? `$${key}$` : key] = value;
 	}

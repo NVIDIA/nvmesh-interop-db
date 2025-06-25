@@ -361,7 +361,8 @@ async function test() {
 	});
 
 	*/
-	interopDB.getAllDistributionTypes({}, (distributionTypes) => {
+
+	interopDB.getAllDistributionTypes({ filter: { ID: { $in: [1, 2] } } }, (distributionTypes) => {
 		console.log(JSON.stringify(distributionTypes.data));
 	});
 /*
