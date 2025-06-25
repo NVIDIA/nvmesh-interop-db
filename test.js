@@ -318,7 +318,7 @@ async function test() {
 		console.log(results);
 	});
 
-	*/
+
 	interopDB.createOperatingSystem({
 		distributionTypeID: 2,
 		version: '12.12.12'
@@ -359,6 +359,12 @@ async function test() {
 	}, (artifacts) => {
 		console.log(JSON.stringify(artifacts));
 	});
+
+	*/
+	interopDB.getAllDistributionTypes({}, (distributionTypes) => {
+		console.log(JSON.stringify(distributionTypes.data));
+	});
+/*
 
 	interopDB.createArtifact({
 		name: 'test.rpm',

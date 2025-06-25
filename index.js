@@ -71,6 +71,12 @@ exports.getAllOfeds = async(queryObj, cb) => {
 	cb(entities);
 };
 
+exports.getAllDistributionTypes = async(queryObj, cb) => {
+	const entities = await dbAPI.getAllEntities(DistributionType, queryObj);
+
+	cb(entities);
+};
+
 exports.getAllComponentTypes = async(cb) => {
 	const entities = await dbAPI.getAllComponentTypes();
 
