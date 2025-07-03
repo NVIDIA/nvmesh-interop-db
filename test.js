@@ -223,16 +223,27 @@ async function test() {
 	});
 
 	*/
-/*
+/**/
 	interopDB.getAllComponents({
-		sort: {  },
+		sort: { "component.name":1 },
 		filter: { },
 		skip: 0,
 		limit: 0
 	}, true, (results) => {
+		console.log(results.error);
 		console.log(JSON.stringify(results));
 	});
-*/
+
+/*
+	interopDB.getAllComponentVersions({
+		sort: { 'componentVersion.version' : 1},
+		filter: { },
+		skip: 0,
+		limit: 0
+	}, (results) => {
+		console.log(results.error || JSON.stringify(results.data[0].component.componentType.name));
+	});
+
 	/*
 	interopDB.getComponentsByTypeID(1, (results) => {
 		console.log(JSON.stringify(results));
@@ -359,8 +370,6 @@ async function test() {
 	}, (artifacts) => {
 		console.log(JSON.stringify(artifacts));
 	});
-
-	*/
 
 	interopDB.getAllDistributionTypes({ filter: { ID: { $in: [1, 2] } } }, (distributionTypes) => {
 		console.log(JSON.stringify(distributionTypes.data));

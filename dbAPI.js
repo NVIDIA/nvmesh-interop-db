@@ -591,9 +591,17 @@ function convertFilterToWhere(filter) {
 }
 
 function convertSortToOrder(sort) {
-	return Object.entries(sort).map(([k, v]) =>
-		[...k.split('.'), v === 1 ? 'ASC' : 'DESC']
-	);
+	return Object.entries(sort).map(([k, v]) => {
+		const parts = k.split('.');
+		let literalString = '';
+
+		if (parts.length === 1)
+			literalString = `\`${parts[0]}\``;
+		else
+			literalString = `\`${parts.slice(0, -1).join('->')}\`.\`${parts[parts.length - 1]}\``;
+
+		return [Sequelize.literal(literalString), v === 1 ? 'ASC' : 'DESC'];
+	});
 }
 
 function warpWithTryCatch(fn) {
