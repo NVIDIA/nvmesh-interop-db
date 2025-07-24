@@ -36,6 +36,7 @@ let scope = {
 			return sequelize;
 		} catch (error) {
 			console.error('Unable to connect to the database:', error);
+			throw error;
 		}
 	},
 	getComponentByID: async(componentID) => {

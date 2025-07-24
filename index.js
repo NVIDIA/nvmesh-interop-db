@@ -35,10 +35,12 @@ async function printModel(modelFn) {
 }
 
 exports.connect = async(path, cb) => {
-	sequelize = await dbAPI.connect(path);
+	const response = await dbAPI.connect(path);
+	if (!response.success)
+		return cb(response.error);
 
-	if (cb)
-		cb();
+	sequelize = response.data;
+	cb();
 };
 
 exports.getSupportedKafkaTopics = async (component, version, cb) => {
