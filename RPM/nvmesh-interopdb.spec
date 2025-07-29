@@ -17,6 +17,24 @@ Source0:			%{name}
         ChangeId: %{change_id}
 
 
+%pre
+GROUP=excelero
+USER=excelero
+
+id -u $USER >/dev/null 2>&1
+retVal=$?
+
+if ! grep -q "^${GROUP}:" /etc/group ; then
+	groupadd $GROUP
+fi
+
+if [ $retVal -ne 0 ]; then
+	echo "Creating user $USER"
+	useradd -g $GROUP $USER
+else
+	usermod -G $GROUP $USER
+fi
+
 %prep
 cp -rfv %{_sourcedir}/%{name} %{_builddir}/
 
@@ -32,7 +50,7 @@ echo "changeID=\"%{change_id}\"" >> %{buildroot}/opt/nvmesh/interop-db/version
 echo "branch=\"%{branch}\"" >> %{buildroot}/opt/nvmesh/interop-db/version
 
 %files
-/opt/nvmesh/interop-db/InteropDB
+%attr(-, excelero, excelero) /opt/nvmesh/interop-db/InteropDB
 /opt/nvmesh/interop-db/version
 
 %changelog
