@@ -2,7 +2,7 @@ const interopDB = require('./index.js');
 const { ArchType } = require('./Models/ArchType.js');
 
 async function test() {
-	await interopDB.connect('/home/tomzan/projects/interop-db/InteropDB');
+	await interopDB.connect('~/projects/interop-db/InteropDB');
 
 	/*
 	await interopDB.logAllEntities();
@@ -224,15 +224,15 @@ async function test() {
 
 	*/
 /**/
-	interopDB.getAllComponents({
-		sort: { "component.name":1 },
-		filter: { },
-		skip: 0,
-		limit: 0
-	}, true, (results) => {
-		console.log(results.error);
-		console.log(JSON.stringify(results));
-	});
+	// interopDB.getAllComponents({
+	// 	sort: { "component.name":1 },
+	// 	filter: { },
+	// 	skip: 0,
+	// 	limit: 0
+	// }, true, (results) => {
+	// 	console.log(results.error);
+	// 	console.log(JSON.stringify(results));
+	// });
 
 /*
 	interopDB.getAllComponentVersions({
@@ -288,8 +288,7 @@ async function test() {
 	});
 
 	interopDB.getUpgradeScenario('nvmesh-client', '3.3.0', '3.3.0-QA', (results) => {
-		console.log(`ERROR: ${results.error}`);
-		console.log(`DATA: ${JSON.stringify(results.data)}`);
+		console.log(JSON.stringify(results));
 	});
 
 	/*
