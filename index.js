@@ -34,7 +34,7 @@ async function printModel(modelFn) {
 	printModels(entities);
 }
 
-exports.connect = async(path, cb) => {
+exports.connect = async(path, cb = () => {}) => {
 	const response = await dbAPI.connect(path);
 	if (!response.success)
 		return cb(response.error);
