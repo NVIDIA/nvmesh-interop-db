@@ -43,6 +43,15 @@ exports.connect = async(path, cb = () => {}) => {
 	cb();
 };
 
+exports.reconnect = async(path, cb = () => {}) => {
+	const response = await dbAPI.reconnect(path);
+	if (!response.success)
+		return cb(response.error);
+
+	sequelize = response.data;
+	cb();
+};
+
 exports.getSupportedKafkaTopics = async (component, version, cb) => {
 	const topics = await dbAPI.getCompatibilities(component, componentTypes.KAFKA_TOPIC, version);
 

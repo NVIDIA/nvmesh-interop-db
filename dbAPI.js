@@ -39,6 +39,14 @@ let scope = {
 			throw error;
 		}
 	},
+	reconnect: async(dbPath) => {
+		if (sequelize) {
+			await sequelize.close();
+			sequelize = null;
+		}
+
+		return await scope.connect(dbPath);
+	},
 	getComponentByID: async(componentID) => {
 		return await Component(sequelize).findOne({ where: { name: componentID } });
 	},
