@@ -1,8 +1,15 @@
+const os = require('os');
 const interopDB = require('./index.js');
 const { ArchType } = require('./Models/ArchType.js');
 
+const path = require('path');
+const fs = require('fs');
+
+const interopDBPath = path.join(os.homedir(), 'projects', 'interop-db', 'InteropDB');
+
+
 async function test() {
-	await interopDB.connect('~/projects/interop-db/InteropDB');
+	await interopDB.connect(interopDBPath);
 
 	/*
 	await interopDB.logAllEntities();
@@ -13,9 +20,7 @@ async function test() {
 	interopDB.getAllArchTypes((archTypes) => {
 		console.log(JSON.stringify(archTypes));
 	});
-
 	*/
-
 
 	/*interopDB.getAllOfeds({
 		sort: { version: -1 },
@@ -111,9 +116,14 @@ async function test() {
 	interopDB.deleteReleases([{ ID: 6 }], (results) => {
 		console.log(results);
 	});
-	interopDB.getSupportedKafkaTopics('managementFeatureCompatibility', '1', (res) =>  {
+
+	interopDB.getSupportedKafkaTopics('nvmesh-management', '3.1.0', (res) =>  {
+		if (res.error)
+			return console.log('ERROR: ', res.error);
+
 		console.log(JSON.stringify(res));
 	});
+	/*
 
 	interopDB.createComponentVersion({
 		version: "7.7.7",
