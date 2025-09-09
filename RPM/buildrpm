@@ -10,9 +10,10 @@ usage:
 -c      --commit-id         commit id
 -g      --change-id         change id
 -d      --git-describe      git describe string
--S      --sign-rpm	        sign the rpm
-        --dist-tag		    distribution tag to include in the RPM name
-        --ubuntu		    create deb package for ubuntu
+-S      --sign-rpm	    sign the rpm
+        --build-number      package build number
+        --dist-tag	    distribution tag to include in the RPM name
+        --ubuntu	    create deb package for ubuntu
 EOF
 }
 
@@ -101,6 +102,7 @@ pkgDeb() {
 }
 
 isUbuntu=false
+buildNum="buildnumber" #default place holder for non-official build
 
 while [[ $# -gt 0 ]]
 do
@@ -136,6 +138,10 @@ case $key in
         ;;
     --ubuntu)
         isUbuntu=true
+        ;;
+    --build-number)
+        buildNum="$2"
+        shift
         ;;
     *)
         # unknown option
