@@ -410,7 +410,9 @@ let scope = {
 		return results;
 	},
 	getReleaseArtificatsForMachine: async(release, osType, osVersion, kernel, ofed, architecture) => {
-		const results = await Release(sequelize).findAll({
+		// First get all releases with platforms that have kernels/ofeds that either match exactly or are regexp patterns
+		const allResults = await Release(sequelize).findAll({
+			where: { version: release },
 			include: [{
 					model: Artifact(sequelize), as: 'artifacts',
 					include: [
@@ -418,17 +420,45 @@ let scope = {
 							{ model: OperatingSystem(sequelize), as: tableAssociations.OPERATING_SYSTEM, where: { version: osVersion }, include: [
 								{ model: DistributionType(sequelize), as: tableAssociations.DISTRIBUTION_TYPE, where: { name: osType } }
 							]},
-							{ model: Kernel(sequelize), as: tableAssociations.KERNEL, where: { version: kernel } },
-							{ model: Ofed(sequelize), as: tableAssociations.OFED, where: { version: ofed } },
+							{ model: Kernel(sequelize), as: tableAssociations.KERNEL, where: {
+								[Op.or]: [
+									{ version: kernel }, // Exact match
+									{ version: { [Op.like]: '/%' } } // Regexp pattern (starts with /)
+								]
+							} },
+							{ model: Ofed(sequelize), as: tableAssociations.OFED, where: {
+								[Op.or]: [
+									{ version: ofed }, // Exact match
+									{ version: { [Op.like]: '/%' } } // Regexp pattern (starts with /)
+								]
+							} },
 							{ model: ArchType(sequelize), as: tableAssociations.ARCH_TYPE, where: { name: architecture } }
 						] },
 					]
 				}
-			],
-			where: { version: release }
+			]
 		});
 
-		return results;
+		// Filter results to check for regex patterns in kernel and ofed versions
+		const filteredResults = allResults.map(release => {
+			const filteredArtifacts = release.artifacts.map(artifact => {
+				const filteredPlatforms = artifact.platforms.filter(platform => {
+					return platformMatchKernelAndOfed(platform, kernel, ofed);
+				});
+
+				return {
+					...artifact.dataValues,
+					platforms: filteredPlatforms
+				};
+			}).filter(artifact => artifact.platforms.length > 0);
+
+			return {
+				...release.dataValues,
+				artifacts: filteredArtifacts
+			};
+		});
+
+		return filteredResults;
 	},
 	createArtifact: async(artifactToCreate) => {
 		const transaction = await sequelize.transaction();
@@ -547,6 +577,45 @@ let scope = {
 		}
 	},
 };
+
+
+function isRegex(version) {
+	return version.startsWith('/') && version.endsWith('/');
+}
+
+function isRegexMatch(value, regexPatternString) {
+	// Remove leading and trailing '/'
+	const regexpPattern = regexPatternString.slice(1, -1);
+
+	try {
+		return new RegExp(regexpPattern).test(value);
+	} catch (e) {
+		// Invalid regexp, treat as no match
+		return false;
+	}
+}
+
+function platformMatchKernelAndOfed(platform, reportedKernel, reportedOfed) {
+	// Check kernel match
+	let kernelMatch = false;
+	const kernelVersion = platform?.kernel?.version;
+	if (isRegex(kernelVersion)) {
+		kernelMatch = isRegexMatch(reportedKernel, kernelVersion);
+	} else {
+		kernelMatch = kernelVersion === reportedKernel;
+	}
+
+	// Check ofed match
+	let ofedMatch = false;
+	const ofedVersion = platform?.ofed?.version;
+	if (isRegex(ofedVersion)) {
+		ofedMatch = isRegexMatch(reportedOfed, ofedVersion);
+	} else {
+		ofedMatch = ofedVersion === reportedOfed;
+	}
+
+	return kernelMatch && ofedMatch;
+}
 
 function parseQueryObj({sort, filter, skip, limit}) {
 	const results = {};

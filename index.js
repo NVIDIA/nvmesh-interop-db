@@ -308,7 +308,7 @@ exports.getUpgradeScenario = async(component, sourceVersion, destinantionRelease
 exports.getReleaseArtificatsForMachine = async(release, osType, osVersion, kernel, ofed, architecture, cb) => {
 	const results = await dbAPI.getReleaseArtificatsForMachine(release, osType, osVersion, kernel, ofed, architecture);
 
-	cb(results.data.length ? results.data[0] : results);
+	cb(results.data?.length ? results.data[0] : results);
 };
 
 exports.createArtifact = async(artifact, cb) => {
