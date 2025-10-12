@@ -291,12 +291,13 @@ async function test() {
 		console.log(results);
 	});
 
-	/*
-	interopDB.getPossibleUpgrades('3.1.0', (results) => {
+	*/
+	interopDB.getPossibleUpgrades('3.3.1', (results) => {
 		console.log(`ERROR: ${results.error}`);
 		console.log(`DATA: ${JSON.stringify(results.data)}`);
 	});
 
+	/*
 	interopDB.getUpgradeScenario('nvmesh-client', '3.3.0', '3.3.0-QA', (results) => {
 		console.log(JSON.stringify(results));
 	});
