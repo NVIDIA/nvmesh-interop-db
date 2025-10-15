@@ -1071,7 +1071,7 @@ INSERT INTO UpgradeStep VALUES(7,'restartClient','systemctl',300,NULL,0,'["resta
 INSERT INTO UpgradeStep VALUES(8,'prepareForClientOnlyUpgrade','/opt/nvmesh/bin/nvmesh_clnt_shutdown',60,NULL,0,'["--upgrade"]');
 INSERT INTO UpgradeStep VALUES(9,'restartManagement','systemctl',300,'',0,'["restart","nvmeshmgr"]');
 INSERT INTO UpgradeStep VALUES(10,'checkClientModules','/opt/nvmesh/client-repo/services/nvmeshclient',300,NULL,0,'["status"]');
-INSERT INTO UpgradeStep VALUES(11,'checkTargetModules','/opt/nvmesh/client-repo/services/nvmeshtarget',300,NULL,0,'["status"]');
+INSERT INTO UpgradeStep VALUES(11,'checkTargetModules','/opt/nvmesh/target-repo/services/nvmeshtarget',300,NULL,0,'["status"]');
 CREATE TABLE UpgradeToUpgradeStep (ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE, upgradeID INTEGER REFERENCES Upgrade (ID) NOT NULL, upgradeStepID INTEGER REFERENCES UpgradeStep (ID) NOT NULL, stepIndex INTEGER NOT NULL);
 INSERT INTO UpgradeToUpgradeStep VALUES(1,1,2,1);
 INSERT INTO UpgradeToUpgradeStep VALUES(2,1,6,2);
