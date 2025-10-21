@@ -136,6 +136,38 @@ let scope = {
 
 		return artifacts.map((a) => a.dataValues);
 	},
+	getAllUpgrades: async(queryObj) => {
+		const filtSortObj = parseQueryObj(queryObj);
+		let limit = filtSortObj.limit;
+		let skip = filtSortObj.offset || 0;
+
+		delete filtSortObj.limit;
+		delete filtSortObj.offset;
+
+		let upgrades = await Upgrade(sequelize).findAll({
+			include: [
+				{ model: UpgradeType(sequelize), as: tableAssociations.UPGRADE_TYPE },
+				{ model: UpgradeStep(sequelize), as: 'steps' },
+				{ model: Release(sequelize), as: tableAssociations.RELEASE },
+				{ model: ComponentVersion(sequelize), as: tableAssociations.COMPONENT_VERSION }
+			],
+			...filtSortObj
+		});
+
+		if (limit)
+			upgrades = upgrades.slice(skip, Math.min(skip + limit, upgrades.length));
+
+		return upgrades;
+	},
+	countUpgrades: async(filterObj = {}) => {
+		const countFilterObj = parseQueryObj({ filter: filterObj });
+
+		const count = await Upgrade(sequelize).count({
+			...countFilterObj
+		});
+
+		return count;
+	},
 	getAllComponentTypes: async() => {
 		const componentTypes = await ComponentType(sequelize).findAll({});
 
@@ -575,6 +607,60 @@ let scope = {
 			await release.setArtifacts([]);
 			await release.destroy();
 		}
+	},
+	createUpgrade: async(upgradeToCreate) => {
+		const transaction = await sequelize.transaction();
+
+		try {
+			const upgrade = await Upgrade(sequelize).create(upgradeToCreate, { transaction });
+
+			if (upgradeToCreate.steps)
+				await upgrade.setSteps(upgradeToCreate.steps.map((s) => s.ID), { transaction });
+
+			await transaction.commit();
+
+			return upgrade;
+		} catch (error) {
+			if (transaction.finished !== 'commit')
+				await transaction.rollback();
+
+			throw (error);
+		}
+	},
+	updateUpgrade: async(upgradeToUpdate) => {
+		const transaction = await sequelize.transaction();
+
+		try {
+			const upgrade = await Upgrade(sequelize).findByPk(upgradeToUpdate.ID);
+
+			if (!upgrade) {
+				throw new Error('Upgrade not found');
+			}
+
+			await upgrade.update(upgradeToUpdate, { where: { ID: upgradeToUpdate.ID }, transaction });
+
+			if (upgradeToUpdate.steps)
+				await upgrade.setSteps(upgradeToUpdate.steps.map((s) => s.ID), { transaction });
+
+			await transaction.commit();
+
+			return upgrade;
+		} catch (error) {
+			if (transaction.finished !== 'commit')
+				await transaction.rollback();
+
+			throw (error);
+		}
+	},
+	deleteUpgrades: async(upgrades) => {
+		for (const u of upgrades) {
+			const upgrade = await Upgrade(sequelize).findByPk(u.ID);
+			await upgrade.setSteps([]);
+			await upgrade.destroy();
+		}
+	},
+	getAllUpgradeTypes: async() => {
+		return await UpgradeType(sequelize).findAll();
 	},
 };
 

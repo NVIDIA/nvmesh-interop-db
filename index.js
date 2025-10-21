@@ -364,3 +364,39 @@ exports.deleteReleases = async(releases, cb) => {
 
 	cb(results);
 };
+
+exports.getAllUpgrades = async(upgrade, cb) => {
+	const results = await dbAPI.getAllUpgrades(upgrade);
+
+	cb(results);
+};
+
+exports.countUpgrades = async(queryObj, cb) => {
+	const results = await dbAPI.countUpgrades(queryObj);
+
+	cb(results);
+};
+
+exports.createUpgrade = async(upgrade, cb) => {
+	const results = await dbAPI.createUpgrade(upgrade);
+
+	cb(results);
+};
+
+exports.updateUpgrade = async(upgrade, cb) => {
+	const results = await dbAPI.updateUpgrade(upgrade);
+
+	cb(results);
+};
+
+exports.deleteUpgrades = async(upgrades, cb) => {
+	const results = await dbAPI.deleteUpgrades(upgrades);
+
+	cb(results);
+};
+
+exports.getAllUpgradeTypes = async(cb) => {
+	const results = await dbAPI.getAllUpgradeTypes();
+
+	cb(results);
+};
