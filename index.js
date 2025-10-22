@@ -400,3 +400,33 @@ exports.getAllUpgradeTypes = async(cb) => {
 
 	cb(results);
 };
+
+exports.getAllUpgradeStepScenarios = async(queryObj, cb) => {
+	const results = await dbAPI.getAllUpgradeStepScenarios(queryObj);
+
+	cb(results);
+};
+
+exports.createUpgradeStepScenario = async(upgradeStep, cb) => {
+	const results = await dbAPI.createUpgradeStepScenario(upgradeStep);
+
+	cb(results);
+};
+
+exports.updateUpgradeStepScenario = async(upgradeStep, cb) => {
+	const results = await dbAPI.updateUpgradeStepScenario(upgradeStep);
+
+	cb(results);
+};
+
+exports.deleteUpgradeStepScenarios = async(upgradeSteps, cb) => {
+	const results = await dbAPI.deleteUpgradeStepScenarios(upgradeSteps);
+
+	cb(results);
+};
+
+exports.countUpgradeStepScenarios = async(queryObj, cb) => {
+	const results = await dbAPI.countUpgradeStepScenarios(queryObj);
+
+	cb(results);
+};

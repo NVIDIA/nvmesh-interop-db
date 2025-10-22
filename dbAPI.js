@@ -662,6 +662,70 @@ let scope = {
 	getAllUpgradeTypes: async() => {
 		return await UpgradeType(sequelize).findAll();
 	},
+	getAllUpgradeStepScenarios: async(queryObj) => {
+		const filtSortObj = parseQueryObj(queryObj);
+
+		let upgradeSteps = await UpgradeStep(sequelize).findAll({
+			...filtSortObj
+		});
+
+		return upgradeSteps;
+	},
+	createUpgradeStepScenario: async(upgradeStepToCreate) => {
+		const transaction = await sequelize.transaction();
+
+		try {
+			const upgradeStep = await UpgradeStep(sequelize).create(upgradeStepToCreate, { transaction });
+
+			await transaction.commit();
+
+			return upgradeStep;
+		} catch (error) {
+			if (transaction.finished !== 'commit')
+				await transaction.rollback();
+
+			throw error;
+		}
+	},
+	updateUpgradeStepScenario: async(upgradeStepToUpdate) => {
+		const transaction = await sequelize.transaction();
+
+		try {
+			const upgradeStep = await UpgradeStep(sequelize).findByPk(upgradeStepToUpdate.ID);
+
+			if (!upgradeStep) {
+				throw new Error('Upgrade step not found');
+			}
+
+			await upgradeStep.update(upgradeStepToUpdate, { where: { ID: upgradeStepToUpdate.ID }, transaction });
+
+			await transaction.commit();
+
+			return upgradeStep;
+		} catch (error) {
+			if (transaction.finished !== 'commit')
+				await transaction.rollback();
+
+			throw error;
+		}
+	},
+	deleteUpgradeStepScenarios: async(upgradeSteps) => {
+		for (const step of upgradeSteps) {
+			const upgradeStep = await UpgradeStep(sequelize).findByPk(step.ID);
+			if (upgradeStep) {
+				await upgradeStep.destroy();
+			}
+		}
+	},
+	countUpgradeStepScenarios: async(filterObj = {}) => {
+		const countFilterObj = parseQueryObj({ filter: filterObj });
+
+		const count = await UpgradeStep(sequelize).count({
+			...countFilterObj
+		});
+
+		return count;
+	},
 };
 
 
