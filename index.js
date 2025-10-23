@@ -1,4 +1,4 @@
-const { Op, Sequelize } = require('sequelize');
+const { Op} = require('sequelize');
 const { ArchType } = require('./Models/ArchType.js');
 const { DistributionType } = require('./Models/DistributionType.js');
 const { Ofed } = require('./Models/Ofed.js');
@@ -12,8 +12,10 @@ const { ComponentCompatibility } = require('./Models/ComponentCompatibility.js')
 const { ComponentRequirement } = require('./Models/ComponentRequirement.js');
 const { Artifact } = require('./Models/Artifact.js');
 const { Release } = require('./Models/Release.js');
+const { Upgrade } = require('./Models/Upgrade');
+const { UpgradeStep } = require('./Models/UpgradeStep');
 const dbAPI = require('./dbAPI.js');
-const { components, tableAssociations, componentTypes } = require('./consts.js');
+const { components, componentTypes } = require('./consts.js');
 
 let sequelize;
 
@@ -299,8 +301,8 @@ exports.getPossibleUpgrades = async(sourceVersion, cb) => {
 	cb(results);
 };
 
-exports.getUpgradeScenario = async(component, sourceVersion, destinantionRelease, cb) => {
-	const results = await dbAPI.getUpgradeScenario(component, sourceVersion, destinantionRelease);
+exports.getUpgrade = async(component, sourceVersion, destinantionRelease, cb) => {
+	const results = await dbAPI.getUpgrade(component, sourceVersion, destinantionRelease);
 
 	cb(results.data.length ? results.data[0] : results);
 };
@@ -372,7 +374,7 @@ exports.getAllUpgrades = async(upgrade, cb) => {
 };
 
 exports.countUpgrades = async(queryObj, cb) => {
-	const results = await dbAPI.countUpgrades(queryObj);
+	const results = await dbAPI.countEntities(Upgrade, queryObj);
 
 	cb(results);
 };
@@ -401,32 +403,32 @@ exports.getAllUpgradeTypes = async(cb) => {
 	cb(results);
 };
 
-exports.getAllUpgradeStepScenarios = async(queryObj, cb) => {
-	const results = await dbAPI.getAllUpgradeStepScenarios(queryObj);
+exports.getAllUpgradeSteps = async(queryObj, cb) => {
+	const results = await dbAPI.getAllUpgradeSteps(queryObj);
 
 	cb(results);
 };
 
-exports.createUpgradeStepScenario = async(upgradeStep, cb) => {
-	const results = await dbAPI.createUpgradeStepScenario(upgradeStep);
+exports.createUpgradeStep = async(upgradeStep, cb) => {
+	const results = await dbAPI.createUpgradeStep(upgradeStep);
 
 	cb(results);
 };
 
-exports.updateUpgradeStepScenario = async(upgradeStep, cb) => {
-	const results = await dbAPI.updateUpgradeStepScenario(upgradeStep);
+exports.updateUpgradeStep = async(upgradeStep, cb) => {
+	const results = await dbAPI.updateUpgradeStep(upgradeStep);
 
 	cb(results);
 };
 
-exports.deleteUpgradeStepScenarios = async(upgradeSteps, cb) => {
-	const results = await dbAPI.deleteUpgradeStepScenarios(upgradeSteps);
+exports.deleteUpgradeSteps = async(upgradeSteps, cb) => {
+	const results = await dbAPI.deleteUpgradeSteps(upgradeSteps);
 
 	cb(results);
 };
 
-exports.countUpgradeStepScenarios = async(queryObj, cb) => {
-	const results = await dbAPI.countUpgradeStepScenarios(queryObj);
+exports.countUpgradeSteps = async(queryObj, cb) => {
+	const results = await dbAPI.countEntities(UpgradeStep, queryObj);
 
 	cb(results);
 };

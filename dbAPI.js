@@ -159,15 +159,6 @@ let scope = {
 
 		return upgrades;
 	},
-	countUpgrades: async(filterObj = {}) => {
-		const countFilterObj = parseQueryObj({ filter: filterObj });
-
-		const count = await Upgrade(sequelize).count({
-			...countFilterObj
-		});
-
-		return count;
-	},
 	getAllComponentTypes: async() => {
 		const componentTypes = await ComponentType(sequelize).findAll({});
 
@@ -428,7 +419,7 @@ let scope = {
 
 		return results.map((r) => r.dataValues);
 	},
-	getUpgradeScenario: async(component, sourceVersion, destinantionRelease) => {
+	getUpgrade: async(component, sourceVersion, destinantionRelease) => {
 		const results = await Upgrade(sequelize).findAll({
 			include: [
 				{ model: Release(sequelize), as: tableAssociations.RELEASE, where: { version: destinantionRelease } },
@@ -639,8 +630,17 @@ let scope = {
 
 			await upgrade.update(upgradeToUpdate, { where: { ID: upgradeToUpdate.ID }, transaction });
 
-			if (upgradeToUpdate.steps)
-				await upgrade.setSteps(upgradeToUpdate.steps.map((s) => s.ID), { transaction });
+			if (Array.isArray(upgradeToUpdate.steps)) {
+				// clear all related steps
+				await upgrade.setSteps([]);
+
+				// add steps with incremented stepIndex
+				let index = 1;
+				for (const step of upgradeToUpdate.steps) {
+					await upgrade.addStep(step.ID, { through: { stepIndex: index }, transaction });
+					index++;
+				}
+			}
 
 			await transaction.commit();
 
@@ -662,7 +662,7 @@ let scope = {
 	getAllUpgradeTypes: async() => {
 		return await UpgradeType(sequelize).findAll();
 	},
-	getAllUpgradeStepScenarios: async(queryObj) => {
+	getAllUpgradeSteps: async(queryObj) => {
 		const filtSortObj = parseQueryObj(queryObj);
 
 		let upgradeSteps = await UpgradeStep(sequelize).findAll({
@@ -671,7 +671,7 @@ let scope = {
 
 		return upgradeSteps;
 	},
-	createUpgradeStepScenario: async(upgradeStepToCreate) => {
+	createUpgradeStep: async(upgradeStepToCreate) => {
 		const transaction = await sequelize.transaction();
 
 		try {
@@ -687,7 +687,7 @@ let scope = {
 			throw error;
 		}
 	},
-	updateUpgradeStepScenario: async(upgradeStepToUpdate) => {
+	updateUpgradeStep: async(upgradeStepToUpdate) => {
 		const transaction = await sequelize.transaction();
 
 		try {
@@ -709,22 +709,13 @@ let scope = {
 			throw error;
 		}
 	},
-	deleteUpgradeStepScenarios: async(upgradeSteps) => {
+	deleteUpgradeSteps: async(upgradeSteps) => {
 		for (const step of upgradeSteps) {
 			const upgradeStep = await UpgradeStep(sequelize).findByPk(step.ID);
 			if (upgradeStep) {
 				await upgradeStep.destroy();
 			}
 		}
-	},
-	countUpgradeStepScenarios: async(filterObj = {}) => {
-		const countFilterObj = parseQueryObj({ filter: filterObj });
-
-		const count = await UpgradeStep(sequelize).count({
-			...countFilterObj
-		});
-
-		return count;
 	},
 };
 
