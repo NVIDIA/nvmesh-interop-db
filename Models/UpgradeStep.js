@@ -20,7 +20,7 @@ exports.UpgradeStep = (sequelize) => {
 			},
 			timeout: {
 				type: DataTypes.INTEGER,
-				allowNull: false,
+				allowNull: true,
 			},
 			verificationCommand: {
 				type: DataTypes.STRING,
