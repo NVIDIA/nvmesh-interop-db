@@ -419,7 +419,7 @@ let scope = {
 
 		return results.map((r) => r.dataValues);
 	},
-	getUpgrade: async(component, sourceVersion, destinantionRelease) => {
+	getUpgradeScenario: async(component, sourceVersion, destinantionRelease) => {
 		const results = await Upgrade(sequelize).findAll({
 			include: [
 				{ model: Release(sequelize), as: tableAssociations.RELEASE, where: { version: destinantionRelease } },

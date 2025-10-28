@@ -301,8 +301,8 @@ exports.getPossibleUpgrades = async(sourceVersion, cb) => {
 	cb(results);
 };
 
-exports.getUpgrade = async(component, sourceVersion, destinantionRelease, cb) => {
-	const results = await dbAPI.getUpgrade(component, sourceVersion, destinantionRelease);
+exports.getUpgradeScenario = async(component, sourceVersion, destinantionRelease, cb) => {
+	const results = await dbAPI.getUpgradeScenario(component, sourceVersion, destinantionRelease);
 
 	cb(results.data.length ? results.data[0] : results);
 };
