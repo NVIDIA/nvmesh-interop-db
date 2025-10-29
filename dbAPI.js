@@ -147,7 +147,10 @@ let scope = {
 		let upgrades = await Upgrade(sequelize).findAll({
 			include: [
 				{ model: UpgradeType(sequelize), as: tableAssociations.UPGRADE_TYPE },
-				{ model: UpgradeStep(sequelize), as: 'steps' },
+				{
+					model: UpgradeStep(sequelize),
+					as: 'steps',
+				},
 				{ model: Release(sequelize), as: tableAssociations.RELEASE },
 				{ model: ComponentVersion(sequelize), as: tableAssociations.COMPONENT_VERSION }
 			],
@@ -156,6 +159,17 @@ let scope = {
 
 		if (limit)
 			upgrades = upgrades.slice(skip, Math.min(skip + limit, upgrades.length));
+
+		// sort steps for each upgrade using stepIndex
+		upgrades.forEach(upgrade => {
+			if (Array.isArray(upgrade.steps)) {
+				upgrade.steps.sort((a, b) => {
+					const stepIndexA = a.UpgradeToUpgradeStep?.stepIndex || 0;
+					const stepIndexB = b.UpgradeToUpgradeStep?.stepIndex || 0;
+					return stepIndexA - stepIndexB;
+				});
+			}
+		});
 
 		return upgrades;
 	},
