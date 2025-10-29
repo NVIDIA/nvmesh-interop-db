@@ -646,7 +646,7 @@ let scope = {
 
 			if (Array.isArray(upgradeToUpdate.steps)) {
 				// clear all related steps
-				await upgrade.setSteps([]);
+				await upgrade.setSteps([], { transaction });
 
 				// add steps with incremented stepIndex
 				let index = 1;
