@@ -397,7 +397,7 @@ INSERT INTO Artifact VALUES(130,'nvmesh-target_3.3.2-3000.ubuntu2204.0.0_amd64.d
 INSERT INTO Artifact VALUES(131,'nvmesh-base-3.3.2-237.el8_10.1.1089.x86_64.rpm');
 INSERT INTO Artifact VALUES(132,'nvmesh-client-3.3.2-237.el8_10.1.1089.x86_64.rpm');
 INSERT INTO Artifact VALUES(133,'nvmesh-target-3.3.2-237.el8_10.1.1089.x86_64.rpm');
-INSERT INTO Artifact VALUES(134,'nvmesh-utils-3.3.2-43.el8_5.1.1578.x86_64.rpm');
+INSERT INTO Artifact VALUES(134,'nvmesh-utils-3.3.2-43.el8_5.1.1618.x86_64.rpm');
 CREATE TABLE Component (ID INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE, name TEXT UNIQUE NOT NULL, componentTypeID INTEGER REFERENCES ComponentType (ID) NOT NULL);
 INSERT INTO Component VALUES(1,'nvmesh-client',1);
 INSERT INTO Component VALUES(2,'nvmesh-management',1);
