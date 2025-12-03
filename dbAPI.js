@@ -266,8 +266,10 @@ let scope = {
 	getAllComponentVersions: async(queryObj) => {
 		let filtSortObj = parseQueryObj(queryObj);
 		let limit = filtSortObj.limit;
+		let skip = filtSortObj.offset || 0;
 
 		delete filtSortObj.limit;
+		delete filtSortObj.offset;
 
 		let findObj = {
 			include: [{
@@ -290,7 +292,7 @@ let scope = {
 		let componentVersions = await ComponentVersion(sequelize).findAll(findObj);
 
 		if (limit)
-			componentVersions = componentVersions.slice(0, limit);
+			componentVersions = componentVersions.slice(skip, Math.min(skip + limit, componentVersions.length));
 
 		return componentVersions;
 	},
