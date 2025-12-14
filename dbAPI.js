@@ -133,13 +133,33 @@ let scope = {
 	},
 	getAllArtifacts: async(queryObj) => {
 		let filtSortObj = parseQueryObj(queryObj);
+		let limit = filtSortObj.limit;
+		let skip = filtSortObj.offset || 0;
 
-		const artifacts = await Artifact(sequelize).findAll({
+		delete filtSortObj.limit;
+		delete filtSortObj.offset;
+
+		let artifacts = await Artifact(sequelize).findAll({
 			include: [{	model: Platform(sequelize), as: 'platforms'	}],
 			...filtSortObj
 		});
 
+		if (limit)
+			artifacts = artifacts.slice(skip, Math.min(skip + limit, artifacts.length));
+
 		return artifacts.map((a) => a.dataValues);
+	},
+	countArtifacts: async(filterObj = {}) => {
+		const countFilterObj = parseQueryObj({ filter: filterObj });
+
+		const count = await Artifact(sequelize).count({
+			distinct: true,
+			col: 'ID',
+			include: [{	model: Platform(sequelize), as: 'platforms'	}],
+			...countFilterObj
+		});
+
+		return count;
 	},
 	getAllUpgrades: async(queryObj) => {
 		const filtSortObj = parseQueryObj(queryObj);

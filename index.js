@@ -15,7 +15,6 @@ const { Component } = require('./Models/Component.js');
 const { ComponentVersion } = require('./Models/ComponentVersion.js');
 const { ComponentCompatibility } = require('./Models/ComponentCompatibility.js');
 const { ComponentRequirement } = require('./Models/ComponentRequirement.js');
-const { Artifact } = require('./Models/Artifact.js');
 const { Release } = require('./Models/Release.js');
 const { Upgrade } = require('./Models/Upgrade');
 const { UpgradeStep } = require('./Models/UpgradeStep');
@@ -337,7 +336,7 @@ exports.updateArtifact = async(artifact, cb) => {
 };
 
 exports.countArtifacts = async(queryObj, cb) => {
-	const results = await dbAPI.countEntities(Artifact, queryObj);
+	const results = await dbAPI.countArtifacts(queryObj);
 
 	cb(results);
 };
