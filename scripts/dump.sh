@@ -3,7 +3,8 @@
 # SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 
-DIR=~/projects/interop-db/
+SCRIPT_PATH="$(cd -- "$(dirname "$0")" > /dev/null 2>&1; pwd -P)"
+DIR=$SCRIPT_PATH/..
 DB_FILE="$DIR/InteropDB"
 DUMP_FILE="$DIR/InteropDB.dump.sql"
 
