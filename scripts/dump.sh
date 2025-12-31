@@ -1,6 +1,7 @@
 #!/bin/bash
 
-DIR=~/projects/interop-db/
+SCRIPT_PATH="$(cd -- "$(dirname "$0")" > /dev/null 2>&1; pwd -P)"
+DIR=$SCRIPT_PATH/..
 DB_FILE="$DIR/InteropDB"
 DUMP_FILE="$DIR/InteropDB.dump.sql"
 
