@@ -1,3 +1,8 @@
+/*
+ * SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 const { tableAssociations } = require('../consts.js');
 const { ComponentCompatibility } = require('./ComponentCompatibility.js');
 const { ComponentVersion } = require('./ComponentVersion.js');

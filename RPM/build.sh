@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+# SPDX-License-Identifier: Apache-2.0
+
 usage() {
 	echo "Usage: $0"
 	echo "BUILDRPM_FLAGS='' can be used to provide buildrpm script special flags"

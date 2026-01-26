@@ -1,3 +1,8 @@
+/*
+ * SPDX-FileCopyrightText: Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 const { Op} = require('sequelize');
 const { ArchType } = require('./Models/ArchType.js');
 const { DistributionType } = require('./Models/DistributionType.js');
