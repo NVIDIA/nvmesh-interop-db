@@ -1,0 +1,17 @@
+{
+  "name": "interop-db",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "author": "Tom Leibu",
+  "license": "ISC",
+  "dependencies": {
+    "@sequelize/core": "^7.0.0-alpha.43",
+    "@sequelize/sqlite3": "^7.0.0-alpha.43",
+    "sequelize": "^6.37.5",
+    "sqlite3": "^5.1.7"
+  }
+}
