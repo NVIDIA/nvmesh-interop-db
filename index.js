@@ -3,21 +3,23 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-const { Op} = require('sequelize');
-const { ArchType } = require('./Models/ArchType.js');
-const { DistributionType } = require('./Models/DistributionType.js');
-const { Ofed } = require('./Models/Ofed.js');
-const { OperatingSystem } = require('./Models/OperatingSystem.js');
-const { Kernel } = require('./Models/Kernel.js');
-const { Platform } = require('./Models/Platform.js');
-const { ComponentType } = require('./Models/ComponentType.js');
-const { Component } = require('./Models/Component.js');
-const { ComponentVersion } = require('./Models/ComponentVersion.js');
-const { ComponentCompatibility } = require('./Models/ComponentCompatibility.js');
-const { ComponentRequirement } = require('./Models/ComponentRequirement.js');
-const { Release } = require('./Models/Release.js');
-const { Upgrade } = require('./Models/Upgrade');
-const { UpgradeStep } = require('./Models/UpgradeStep');
+const { Op } = require('sequelize');
+const {
+	Platform,
+	DistributionType,
+	ComponentVersion,
+	ComponentType,
+	ComponentCompatibility,
+	Component,
+	Kernel,
+	Ofed,
+	OperatingSystem,
+	ArchType,
+	Upgrade,
+	Release,
+	UpgradeStep,
+	ComponentRequirement
+} = require('./Models/Inititializer.js');
 const dbAPI = require('./dbAPI.js');
 const { components, componentTypes } = require('./consts.js');
 
@@ -119,25 +121,25 @@ exports.getAllPlatforms = async(queryObj, cb) => {
 };
 
 exports.createPlatform = async(platform, cb) => {
-	const result = await dbAPI.createPlatform(platform);
+	const result = await dbAPI.createEntity(Platform, platform);
 
 	cb(result);
 };
 
 exports.deletePlatforms = async(platforms, cb) => {
-	const results = await dbAPI.deletePlatforms({ ID: { [Op.in]: platforms.map((p) => p.ID) } });
+	const results = await dbAPI.deleteEntitiesByIDs(Platform, platforms.map((p) => p.ID));
 
 	cb(results);
 };
 
 exports.deleteComponentVersions = async(componentVersions, cb) => {
-	const results = await dbAPI.deleteComponentVersions({ ID: { [Op.in]: componentVersions.map((r) => r.ID) } });
+	const results = await dbAPI.deleteEntitiesByIDs(ComponentVersion, componentVersions.map((r) => r.ID));
 
 	cb(results);
 };
 
 exports.updatePlatform = async(platform, cb) => {
-	const results = await dbAPI.updatePlatform(platform);
+	const results = await dbAPI.updateEntity(Platform, platform);
 
 	cb(results);
 };
@@ -239,7 +241,7 @@ exports.countOperatingSystems = async(queryObj, cb) => {
 };
 
 exports.createOperatingSystem = async(operatingSystem, cb) => {
-	const result = await dbAPI.createOperatingSystem(operatingSystem);
+	const result = await dbAPI.createEntity(OperatingSystem, operatingSystem);
 
 	cb(result);
 };
@@ -414,13 +416,13 @@ exports.getAllUpgradeSteps = async(queryObj, cb) => {
 };
 
 exports.createUpgradeStep = async(upgradeStep, cb) => {
-	const results = await dbAPI.createUpgradeStep(upgradeStep);
+	const results = await dbAPI.createEntity(UpgradeStep, upgradeStep);
 
 	cb(results);
 };
 
 exports.updateUpgradeStep = async(upgradeStep, cb) => {
-	const results = await dbAPI.updateUpgradeStep(upgradeStep);
+	const results = await dbAPI.updateEntity(UpgradeStep, upgradeStep);
 
 	cb(results);
 };

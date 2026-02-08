@@ -265,15 +265,6 @@ let scope = {
 
 		return platforms;
 	},
-	createPlatform: async(platform) => {
-		return await Platform(sequelize).create(platform);
-	},
-	deletePlatforms: async(whereObj) => {
-		return await Platform(sequelize).destroy({ where: whereObj });
-	},
-	updatePlatform: async(platform) => {
-		return await Platform(sequelize).update(platform, { where: { ID: platform.ID } });
-	},
 	countComponentVersions: async(filterObj = {}) => {
 		const countFilterObj = parseQueryObj({ filter: filterObj });
 
@@ -393,9 +384,6 @@ let scope = {
 			throw (error);
 		}
 	},
-	deleteComponentVersions: async(whereObj) => {
-		return await ComponentVersion(sequelize).destroy({ where: whereObj });
-	},
 	countEntities: async(entity, filterObj = {}) => {
 		const count = await entity(sequelize).count(parseQueryObj({ filter: filterObj }));
 
@@ -432,9 +420,6 @@ let scope = {
 	},
 	createEntity: async(entity, entityObj) => {
 		return await entity(sequelize).create(entityObj);
-	},
-	createOperatingSystem: async(operatingSystem) => {
-		return await OperatingSystem(sequelize).create(operatingSystem, { include: [{ model: DistributionType(sequelize), as: tableAssociations.DISTRIBUTION_TYPE }] });
 	},
 	deleteEntitiesByIDs: async(entity, ids) => {
 		return await entity(sequelize).destroy({ where: { ID: { [Op.in]: ids } } });
@@ -711,44 +696,6 @@ let scope = {
 		});
 
 		return upgradeSteps;
-	},
-	createUpgradeStep: async(upgradeStepToCreate) => {
-		const transaction = await sequelize.transaction();
-
-		try {
-			const upgradeStep = await UpgradeStep(sequelize).create(upgradeStepToCreate, { transaction });
-
-			await transaction.commit();
-
-			return upgradeStep;
-		} catch (error) {
-			if (transaction.finished !== 'commit')
-				await transaction.rollback();
-
-			throw error;
-		}
-	},
-	updateUpgradeStep: async(upgradeStepToUpdate) => {
-		const transaction = await sequelize.transaction();
-
-		try {
-			const upgradeStep = await UpgradeStep(sequelize).findByPk(upgradeStepToUpdate.ID);
-
-			if (!upgradeStep) {
-				throw new Error('Upgrade step not found');
-			}
-
-			await upgradeStep.update(upgradeStepToUpdate, { where: { ID: upgradeStepToUpdate.ID }, transaction });
-
-			await transaction.commit();
-
-			return upgradeStep;
-		} catch (error) {
-			if (transaction.finished !== 'commit')
-				await transaction.rollback();
-
-			throw error;
-		}
 	},
 	deleteUpgradeSteps: async(upgradeSteps) => {
 		for (const step of upgradeSteps) {
