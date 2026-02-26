@@ -161,7 +161,7 @@ let scope = {
 
 		return count;
 	},
-	getAllUpgrades: async(queryObj) => {
+	getAllUpgrades: async(queryObj, loadArtifacts) => {
 		const filtSortObj = parseQueryObj(queryObj);
 		let limit = filtSortObj.limit;
 		let skip = filtSortObj.offset || 0;
@@ -169,14 +169,15 @@ let scope = {
 		delete filtSortObj.limit;
 		delete filtSortObj.offset;
 
+		const release = { model: Release(sequelize), as: tableAssociations.RELEASE };
+		if (loadArtifacts)
+			release.include = [{ model: Artifact(sequelize), as: 'artifacts' }];
+
 		let upgrades = await Upgrade(sequelize).findAll({
 			include: [
 				{ model: UpgradeType(sequelize), as: tableAssociations.UPGRADE_TYPE },
-				{
-					model: UpgradeStep(sequelize),
-					as: 'steps',
-				},
-				{ model: Release(sequelize), as: tableAssociations.RELEASE },
+				{ model: UpgradeStep(sequelize), as: 'steps' },
+				release,
 				{ model: ComponentVersion(sequelize), as: tableAssociations.COMPONENT_VERSION }
 			],
 			...filtSortObj

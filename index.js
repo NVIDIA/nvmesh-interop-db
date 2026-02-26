@@ -373,8 +373,8 @@ exports.deleteReleases = async(releases, cb) => {
 	cb(results);
 };
 
-exports.getAllUpgrades = async(queryObj, cb) => {
-	const results = await dbAPI.getAllUpgrades(queryObj);
+exports.getAllUpgrades = async(queryObj, loadArtifacts, cb) => {
+	const results = await dbAPI.getAllUpgrades(queryObj, loadArtifacts);
 
 	cb(results);
 };
