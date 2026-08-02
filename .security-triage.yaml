@@ -1,0 +1,22 @@
+version: "1.0"
+project: "interop-db"
+last_updated: "2026-07-21T00:00:00Z"
+
+repository_exposure_classification:
+  visibility: "Public"
+  basis: "Apache-2.0 licensed (LICENSE + per-file SPDX headers) with a public open-source mirror referenced in README.md/AGENTS.md; written to public-safe detail"
+  confirmed_by: "batch-run"
+  date: "2026-07-21"
+
+service_exposure_classification:
+  tier: "External / Regulated"
+  confidence: "high"
+  basis: "externally distributed as an RPM in NVMesh product releases and via a public OSS mirror; runtime production dependency of the management server for upgrade eligibility"
+  confirmed_by: "batch-run"
+  date: "2026-07-21"
+
+false_positives: []
+
+accepted_risks: []
+
+suppressed_cves: []
